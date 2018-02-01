@@ -51,6 +51,9 @@ extension SellVC: Constrainable{
         let banner = NotificationBanner(title: "Job Accepted", subtitle: "\(user.name!) has accepted your job", leftView: profilePicture, style: .info)
         banner.show(bannerPosition: .bottom)
         banner.autoDismiss = false
+        banner.onSwipeUp = {
+            self.performSegue(withIdentifier: "goToJobOwnerStartJob", sender: self)
+        }
         
     }
     
@@ -183,9 +186,6 @@ extension SellVC: Constrainable{
         self.jobDetailsView.cornerRadius = 7
         self.jobPriceView.cornerRadius = 7
     }
-    
-    
-    
     
 }
 
