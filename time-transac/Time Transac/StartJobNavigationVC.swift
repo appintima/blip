@@ -91,7 +91,7 @@ class StartJobNavigation: UIViewController, MGLMapViewDelegate, CLLocationManage
         mapView.delegate = self
         mapView.navigationMapDelegate = self
         
-        mapView.userTrackingMode = .follow
+        mapView.setUserTrackingMode(.follow, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -164,10 +164,15 @@ class StartJobNavigation: UIViewController, MGLMapViewDelegate, CLLocationManage
         
         exampleMode = .default
         
-        let navigationViewController = NavigationViewController(for: route, locationManager: navigationLocationManager())
+        let navVC = TBTNavigationVC(for: route)
+//        let navigationViewController = NavigationViewController(for: route, locationManager: navigationLocationManager())
         Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateAccepterLocation), userInfo: nil, repeats: true)
-        navigationViewController.delegate = self
-        self.present(navigationViewController, animated: true, completion: nil)
+//        navigationViewController.delegate = self
+        if let navjob = self.job{
+            navVC.job = navjob
+        }
+        
+        self.present(navVC, animated: true, completion: nil)
         
     }
     
@@ -181,16 +186,16 @@ class StartJobNavigation: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
-    func startNavigation(styles: [Style]) {
-        guard let route = currentRoute else { return }
-        
-        exampleMode = .default
-        
-        let navigationViewController = NavigationViewController(for: route, styles: styles, locationManager: navigationLocationManager())
-        navigationViewController.delegate = self
-        
-        present(navigationViewController, animated: true, completion: nil)
-    }
+//    func startNavigation(styles: [Style]) {
+//        guard let route = currentRoute else { return }
+//
+//        exampleMode = .default
+//
+//        let navigationViewController = NavigationViewController(for: route, styles: styles, locationManager: navigationLocationManager())
+//        navigationViewController.delegate = self
+//
+//        present(navigationViewController, animated: true, completion: nil)
+//    }
     
     
     // MARK: Styling the default UI
@@ -202,10 +207,11 @@ class StartJobNavigation: UIViewController, MGLMapViewDelegate, CLLocationManage
         
         let styles = [CustomDayStyle(), CustomNightStyle()]
         
-        let navigationViewController = NavigationViewController(for: route, styles: styles, locationManager: navigationLocationManager())
-        navigationViewController.delegate = self
+//        let navigationViewController = NavigationViewController(for: route, styles: styles, locationManager: navigationLocationManager())
+        let navVc = TBTNavigationVC(for: route, styles: styles)
+//        navigationViewController.delegate = self
         
-        present(navigationViewController, animated: true, completion: nil)
+        present(navVc, animated: true, completion: nil)
     }
     
     func navigationLocationManager() -> NavigationLocationManager {
@@ -221,15 +227,16 @@ class StartJobNavigation: UIViewController, MGLMapViewDelegate, CLLocationManage
         exampleMode = .multipleWaypoints
         
         
-        let navigationViewController = NavigationViewController(for: route, locationManager: navigationLocationManager())
-        navigationViewController.delegate = self
-        
-        present(navigationViewController, animated: true, completion: nil)
+//        let navigationViewController = NavigationViewController(for: route, locationManager: navigationLocationManager())
+//        navigationViewController.delegate = self
+//        
+//        present(navigationViewController, animated: true, completion: nil)
     }
 }
 
 //MARK: - NavigationMapViewDelegate
 extension StartJobNavigation: NavigationMapViewDelegate {
+    //NOT USEFUL HERE AT LEAST
     func navigationMapView(_ mapView: NavigationMapView, didSelect waypoint: Waypoint) {
         guard let routeOptions = currentRoute?.routeOptions else { return }
         let modifiedOptions = routeOptions.without(waypoint: waypoint)
@@ -276,22 +283,23 @@ extension StartJobNavigation: NavigationMapViewDelegate {
 
 
 //MARK: NavigationViewControllerDelegate
-extension StartJobNavigation: NavigationViewControllerDelegate {
-    // By default, when the user arrives at a waypoint, the next leg starts immediately.
-    // If you implement this method, return true to preserve this behavior.
-    // Return false to remain on the current leg, for example to allow the user to provide input.
-    // If you return false, you must manually advance to the next leg. See the example above in `confirmationControllerDidConfirm(_:)`.
-    func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
-        // Multiple waypoint demo
-        print("You have arriuved")
-        let startActualJob = self.storyboard?.instantiateViewController(withIdentifier: "endJobNavigation") as? endJobNavigation
-        startActualJob?.job = self.job
-        navigationViewController.present(startActualJob!, animated: true, completion: nil)
-        return false
-    }
-    
-
-}
+//extension StartJobNavigation: NavigationViewControllerDelegate {
+////     By default, when the user arrives at a waypoint, the next leg starts immediately.
+////     If you implement this method, return true to preserve this behavior.
+////     Return false to remain on the current leg, for example to allow the user to provide input.
+////     If you return false, you must manually advance to the next leg. See the example above in `confirmationControllerDidConfirm(_:)`.
+////    NOT USEFUL
+//    func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
+//        // Multiple waypoint demo
+//        print("You have arriuved")
+//        let startActualJob = self.storyboard?.instantiateViewController(withIdentifier: "endJobNavigation") as? endJobNavigation
+//        startActualJob?.job = self.job
+//        navigationViewController.present(startActualJob!, animated: true, completion: nil)
+//        return false
+//    }
+//
+//
+//}
 
 
 /**
