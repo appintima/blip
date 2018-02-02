@@ -1419,6 +1419,52 @@
             </objects>
             <point key="canvasLocation" x="-4708" y="-101.19940029985008"/>
         </scene>
+        <!--TestMGL Nav-->
+        <scene sceneID="Omb-e7-hZK">
+            <objects>
+                <viewController id="Xfj-CJ-xAN" customClass="TestMGLNav" customModule="Time_Transac" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2tj-55-Bja"/>
+                        <viewControllerLayoutGuide type="bottom" id="dne-ri-1bp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="GqU-FZ-QKe">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <connections>
+                        <segue destination="5E6-OX-LNO" kind="presentation" identifier="" id="y8V-Pr-EKd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="erw-ah-UV4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-5693" y="-1027"/>
+        </scene>
+        <!--TestVC-->
+        <scene sceneID="LTe-Jc-zK1">
+            <objects>
+                <viewController storyboardIdentifier="goToTest" id="5E6-OX-LNO" customClass="TestVC" customModule="Time_Transac" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="87O-Of-37I"/>
+                        <viewControllerLayoutGuide type="bottom" id="aWJ-rN-nc8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="l7E-ie-1gd">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Qg-cj-2XP">
+                                <rect key="frame" x="110" y="300" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lEN-SR-scT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4397" y="-1251"/>
+        </scene>
         <!--rootViewController-->
         <scene sceneID="Wd4-tW-uC7">
             <objects>

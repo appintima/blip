@@ -18,6 +18,10 @@
 		3B4DE41D1FFB4C33006F7F83 /* ApplicantsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4DE41C1FFB4C33006F7F83 /* ApplicantsVC.swift */; };
 		3B4DE41F1FFC7304006F7F83 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4DE41E1FFC7303006F7F83 /* AppError.swift */; };
 		3B5371862021773D0020F3B1 /* PasswordReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5371852021773D0020F3B1 /* PasswordReset.swift */; };
+		3B5371D72023C8290020F3B1 /* TestMGLNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5371D62023C8290020F3B1 /* TestMGLNav.swift */; };
+		3B5371D92023FF660020F3B1 /* TestNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5371D82023FF660020F3B1 /* TestNavigationViewController.swift */; };
+		3B5371DB202428D80020F3B1 /* TestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5371DA202428D80020F3B1 /* TestVC.swift */; };
+		3B5371DD2024A4730020F3B1 /* TBTNavigationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5371DC2024A4730020F3B1 /* TBTNavigationVC.swift */; };
 		3B6B190A1FA4C3D700DC9134 /* UnconfirmedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6B19091FA4C3D700DC9134 /* UnconfirmedVC.swift */; };
 		3B71C4FD1EE6836800746DEE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71C4FC1EE6836800746DEE /* AppDelegate.swift */; };
 		3B71C4FF1EE6836800746DEE /* AddNameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71C4FE1EE6836800746DEE /* AddNameVC.swift */; };
@@ -127,6 +131,10 @@
 		3B4DE41C1FFB4C33006F7F83 /* ApplicantsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicantsVC.swift; sourceTree = "<group>"; };
 		3B4DE41E1FFC7303006F7F83 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		3B5371852021773D0020F3B1 /* PasswordReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordReset.swift; sourceTree = "<group>"; };
+		3B5371D62023C8290020F3B1 /* TestMGLNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMGLNav.swift; sourceTree = "<group>"; };
+		3B5371D82023FF660020F3B1 /* TestNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestNavigationViewController.swift; sourceTree = "<group>"; };
+		3B5371DA202428D80020F3B1 /* TestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestVC.swift; sourceTree = "<group>"; };
+		3B5371DC2024A4730020F3B1 /* TBTNavigationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TBTNavigationVC.swift; sourceTree = "<group>"; };
 		3B6B19091FA4C3D700DC9134 /* UnconfirmedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnconfirmedVC.swift; sourceTree = "<group>"; };
 		3B71C4F91EE6836800746DEE /* Time Transac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Time Transac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B71C4FC1EE6836800746DEE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -447,10 +455,14 @@
 			isa = PBXGroup;
 			children = (
 				F355FE572018245C00A7F258 /* StartJobNavigationVC.swift */,
+				3B5371DC2024A4730020F3B1 /* TBTNavigationVC.swift */,
 				F35787E6201EBA9700D29006 /* endJobNavigation.swift */,
 				5F23C5A3201FB4180057DC30 /* MGLMapView+CustomAdditions.h */,
 				5F23C5A4201FB46D0057DC30 /* MGLMapView+CustomAdditions.m */,
 				5FB8A52A2023AA3000B5FE07 /* WaypointConfirmationViewController.swift */,
+				3B5371D62023C8290020F3B1 /* TestMGLNav.swift */,
+				3B5371D82023FF660020F3B1 /* TestNavigationViewController.swift */,
+				3B5371DA202428D80020F3B1 /* TestVC.swift */,
 			);
 			name = StartJob;
 			sourceTree = "<group>";
@@ -885,6 +897,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B5371DB202428D80020F3B1 /* TestVC.swift in Sources */,
 				F305C7081F68C90800D8C296 /* navigationBarViewController.swift in Sources */,
 				F35EE16F1F8D3F38007C08E7 /* PopUpJobViewVC.swift in Sources */,
 				F3DD81F91FC3BD35000826F8 /* AppSnackbarController.swift in Sources */,
@@ -894,6 +907,8 @@
 				5F1F8DA72003F17200E20AB0 /* OnboardingVCViewController.swift in Sources */,
 				F30137121F2D479E0023828A /* CustomUIBorderControls.swift in Sources */,
 				F33034511FEF80F3004C9C30 /* SettingsViewController.swift in Sources */,
+				3B5371D72023C8290020F3B1 /* TestMGLNav.swift in Sources */,
+				3B5371D92023FF660020F3B1 /* TestNavigationViewController.swift in Sources */,
 				3B71C4FF1EE6836800746DEE /* AddNameVC.swift in Sources */,
 				3B1EC3031EFC915700182029 /* LoginVC.swift in Sources */,
 				3B6B190A1FA4C3D700DC9134 /* UnconfirmedVC.swift in Sources */,
@@ -913,6 +928,7 @@
 				F30C07DD1FF9AA57009FC572 /* HelperFunctions.swift in Sources */,
 				F3D9ED1A1F76FD2C00332237 /* ConfirmProfilePageVC.swift in Sources */,
 				3B71C5C01EF3C22900746DEE /* Skill.swift in Sources */,
+				3B5371DD2024A4730020F3B1 /* TBTNavigationVC.swift in Sources */,
 				F35EE16B1F8355AC007C08E7 /* customShadowView.swift in Sources */,
 				3B0FC4051F2043FE00ED88C6 /* SellVC.swift in Sources */,
 				5FB8A52B2023AA3000B5FE07 /* WaypointConfirmationViewController.swift in Sources */,

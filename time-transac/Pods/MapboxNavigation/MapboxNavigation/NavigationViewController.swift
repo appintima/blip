@@ -171,7 +171,7 @@ public protocol NavigationViewControllerDelegate {
  It provides step by step instructions, an overview of all steps for the given route and support for basic styling.
  */
 @objc(MBNavigationViewController)
-public class NavigationViewController: UIViewController, RouteMapViewControllerDelegate {
+open class NavigationViewController: UIViewController, RouteMapViewControllerDelegate {
     
     /** 
      A `Route` object constructed by [MapboxDirections](https://mapbox.github.io/mapbox-navigation-ios/directions/).
@@ -343,14 +343,14 @@ public class NavigationViewController: UIViewController, RouteMapViewControllerD
         suspendNotifications()
     }
     
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         resumeNotifications()
         progressBar.dock(on: view)
         view.clipsToBounds = true
     }
     
-    public override func viewWillAppear(_ animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         UIApplication.shared.isIdleTimerDisabled = true
@@ -362,7 +362,7 @@ public class NavigationViewController: UIViewController, RouteMapViewControllerD
         }
     }
     
-    public override func viewWillDisappear(_ animated: Bool) {
+    open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         UIApplication.shared.isIdleTimerDisabled = false
@@ -536,7 +536,7 @@ extension NavigationViewController: RouteControllerDelegate {
         mapViewController?.statusView.show(title, showSpinner: false)
     }
     
-    @objc public func routeController(_ routeController: RouteController, didArriveAt waypoint: Waypoint) -> Bool {
+    @objc open func routeController(_ routeController: RouteController, didArriveAt waypoint: Waypoint) -> Bool {
         let advancesToNextLeg = delegate?.navigationViewController?(self, didArriveAt: waypoint) ?? true
         
         if routeController.routeProgress.isFinalLeg && advancesToNextLeg && showsEndOfRouteFeedback {
