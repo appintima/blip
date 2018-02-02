@@ -242,7 +242,7 @@ class ServiceCalls{
     
     func getLiveLocationOnce(hash: String, completion: @escaping (CLLocationCoordinate2D) -> ()){
         
-        userRef.observeSingleEvent(of: .value) { (userSnap) in
+        userRef.child(hash).observeSingleEvent(of: .value) { (userSnap) in
             print("entered get live locations")
             let value = userSnap.value as? [String: AnyObject]
             let lat = value!["currentLatitude"] as? Double
