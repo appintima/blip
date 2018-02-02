@@ -300,7 +300,7 @@ class ServiceCalls{
         
         getJobPostedByCurrentUser { (job) in
             
-            self.jobsRef.child(job.jobID).observe(.childChanged, with: { (snapshot) in
+            self.jobsRef.child(job.jobID).observe(.value, with: { (snapshot) in
             
                 let job = Job(snapshot: snapshot)
                 if (job?.accepterReady)!{
