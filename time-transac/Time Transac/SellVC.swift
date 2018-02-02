@@ -128,6 +128,13 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
                 dest.job = self.acceptedJob
             }
         }
+        if segue.identifier == "goToOwnerStartJob"{
+            if let dest = segue.destination as? JobOwnerStartJob{
+                service.getJobPostedByCurrentUser(completion: { (job) in
+                    dest.job = job
+                })
+            }
+        }
         
     }
 
@@ -138,9 +145,11 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locValue:CLLocationCoordinate2D = manager.location!.coordinate
         self.camera.centerCoordinate = locValue
-        self.camera.altitude = CLLocationDistance(12000)
+        self.camera.altitude = CLLocationDistance(11000)
         self.camera.pitch = CGFloat(60)
-        self.MapView.setCamera(camera, animated: true)
+        self.MapView.setCenter(locValue, zoomLevel: 5, direction: 0, animated: false)
+        self.MapView.setZoomLevel(7, animated: true)
+        self.MapView.setCamera(camera, withDuration: 4, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         currentLocation = locValue
         service.updateJobAccepterLocation(location: locValue)
         manager.stopUpdatingLocation()

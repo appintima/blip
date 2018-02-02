@@ -42,6 +42,7 @@ extension SellVC: Constrainable{
         MyAPIClient.sharedClient.addPaymentSource(id: source, completion: { (error) in })
     }
     
+    
     func prepareBannerForJobAccepted(user: IntimaUser){
         
         let profilePicture = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
@@ -55,6 +56,18 @@ extension SellVC: Constrainable{
             self.performSegue(withIdentifier: "goToJobOwnerStartJob", sender: self)
         }
         
+    }
+    
+    func centerCameraOnJobAccepter(location: CLLocationCoordinate2D){
+        
+        self.camera.altitude = CLLocationDistance(50000)
+        self.camera.centerCoordinate = location
+        self.camera.pitch = CGFloat(0)
+        self.MapView.setCamera(camera, withDuration: 4, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)) {
+            self.camera.altitude = CLLocationDistance(11000)
+            self.camera.pitch = CGFloat(60)
+            self.MapView.setCamera(self.camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        }
     }
     
     //Prepares the map by adding annotations for jobs from firebase, and setting the mapview.
@@ -99,6 +112,7 @@ extension SellVC: Constrainable{
                         self.MapView.addAnnotation(self.jobAccepterAnnotation)
                     })
                 })
+                self.centerCameraOnJobAccepter(location: self.jobAccepterAnnotation.coordinate)
                 Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.updateAccepterLocations), userInfo: nil, repeats: true)
             }
         }
@@ -112,6 +126,7 @@ extension SellVC: Constrainable{
             }
         }
     }
+
     
     @objc func updateAccepterLocations(){
         

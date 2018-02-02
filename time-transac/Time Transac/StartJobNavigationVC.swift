@@ -165,9 +165,6 @@ class StartJobNavigation: UIViewController, MGLMapViewDelegate, CLLocationManage
         exampleMode = .default
         
         let navVC = TBTNavigationVC(for: route)
-//        let navigationViewController = NavigationViewController(for: route, locationManager: navigationLocationManager())
-        Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateAccepterLocation), userInfo: nil, repeats: true)
-//        navigationViewController.delegate = self
         if let navjob = self.job{
             navVC.job = navjob
         }
@@ -175,27 +172,6 @@ class StartJobNavigation: UIViewController, MGLMapViewDelegate, CLLocationManage
         self.present(navVC, animated: true, completion: nil)
         
     }
-    
-    @objc func updateAccepterLocation(){
-        
-        print("Entered here")
-        if let location = navigationLocationManager().location?.coordinate{
-            service.updateJobAccepterLocation(location: location)
-        }
-        
-        
-    }
-    
-//    func startNavigation(styles: [Style]) {
-//        guard let route = currentRoute else { return }
-//
-//        exampleMode = .default
-//
-//        let navigationViewController = NavigationViewController(for: route, styles: styles, locationManager: navigationLocationManager())
-//        navigationViewController.delegate = self
-//
-//        present(navigationViewController, animated: true, completion: nil)
-//    }
     
     
     // MARK: Styling the default UI
@@ -225,12 +201,6 @@ class StartJobNavigation: UIViewController, MGLMapViewDelegate, CLLocationManage
         guard let route = self.currentRoute else { return }
         
         exampleMode = .multipleWaypoints
-        
-        
-//        let navigationViewController = NavigationViewController(for: route, locationManager: navigationLocationManager())
-//        navigationViewController.delegate = self
-//        
-//        present(navigationViewController, animated: true, completion: nil)
     }
 }
 
@@ -280,26 +250,6 @@ extension StartJobNavigation: NavigationMapViewDelegate {
     }
 }
 
-
-
-//MARK: NavigationViewControllerDelegate
-//extension StartJobNavigation: NavigationViewControllerDelegate {
-////     By default, when the user arrives at a waypoint, the next leg starts immediately.
-////     If you implement this method, return true to preserve this behavior.
-////     Return false to remain on the current leg, for example to allow the user to provide input.
-////     If you return false, you must manually advance to the next leg. See the example above in `confirmationControllerDidConfirm(_:)`.
-////    NOT USEFUL
-//    func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
-//        // Multiple waypoint demo
-//        print("You have arriuved")
-//        let startActualJob = self.storyboard?.instantiateViewController(withIdentifier: "endJobNavigation") as? endJobNavigation
-//        startActualJob?.job = self.job
-//        navigationViewController.present(startActualJob!, animated: true, completion: nil)
-//        return false
-//    }
-//
-//
-//}
 
 
 /**
