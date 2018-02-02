@@ -107,12 +107,12 @@ extension SellVC: Constrainable{
                 self.accepterHash = hash
                 self.service.getLiveLocation(hash: self.accepterHash!, completion: { (loc) in
                     self.jobAccepterAnnotation.coordinate = loc
+                    self.centerCameraOnJobAccepter(location: loc)
                     self.service.getUserInfo(hash: self.accepterHash!, completion: { (user) in
                         self.jobAccepterAnnotation.photoURL = user?.photoURL
                         self.MapView.addAnnotation(self.jobAccepterAnnotation)
                     })
                 })
-                self.centerCameraOnJobAccepter(location: self.jobAccepterAnnotation.coordinate)
                 Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.updateAccepterLocations), userInfo: nil, repeats: true)
             }
         }
