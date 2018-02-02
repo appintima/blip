@@ -97,7 +97,7 @@ class ServiceCalls{
             let job = Job(snapshot: snapshot)
             // if the task is accepted but not completed put the job in completion to be removed when called
             if ((job?.occupied)! && !((job?.completed)!) && (job?.jobOwnerEmailHash != self.emailHash)){
-                print("Inside")
+                print("Removed Accepted Job From Map")
                 completion(job)
             }
         })
