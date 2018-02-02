@@ -18,5 +18,17 @@ class CustomAnnotationView: MGLAnnotationView {
         scalesWithViewingDistance = false
         
     }
+    
+    override func action(for layer: CALayer, forKey event: String) -> CAAction? {
+        if event == "position" {
+            let animation = CABasicAnimation(keyPath: event)
+            animation.duration = 6
+//            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+//            animation.speed = 0.5
+            return animation
+        } else {
+            return super.action(for: layer, forKey: event)
+        }
+    }
 
 }

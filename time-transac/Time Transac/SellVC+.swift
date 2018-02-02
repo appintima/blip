@@ -46,7 +46,7 @@ extension SellVC: Constrainable{
     func prepareBannerForJobAccepted(user: IntimaUser){
         
         let profilePicture = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
-        profilePicture.cornerRadius = profilePicture.frame.size.height/2
+        profilePicture.ApplyOuterShadowToView()
         profilePicture.contentMode = .scaleAspectFill
         profilePicture.kf.setImage(with: user.photoURL)
         let banner = NotificationBanner(title: "Job Accepted", subtitle: "\(user.name!) has accepted your job", leftView: profilePicture, style: .info)
@@ -60,11 +60,11 @@ extension SellVC: Constrainable{
     
     func centerCameraOnJobAccepter(location: CLLocationCoordinate2D){
         
-        self.camera.altitude = CLLocationDistance(50000)
+        self.camera.altitude = CLLocationDistance(60000)
         self.camera.centerCoordinate = location
         self.camera.pitch = CGFloat(0)
-        self.MapView.setCamera(camera, withDuration: 4, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)) {
-            self.camera.altitude = CLLocationDistance(11000)
+        self.MapView.setCamera(camera, withDuration: 2, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)) {
+            self.camera.altitude = CLLocationDistance(1000)
             self.camera.pitch = CGFloat(60)
             self.MapView.setCamera(self.camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         }
@@ -105,7 +105,7 @@ extension SellVC: Constrainable{
                     self.MapView.removeAnnotations(annotations)
                 }
                 self.accepterHash = hash
-                self.service.getLiveLocation(hash: self.accepterHash!, completion: { (loc) in
+                self.service.getLiveLocationOnce(hash: self.accepterHash!, completion: { (loc) in
                     self.jobAccepterAnnotation.coordinate = loc
                     self.centerCameraOnJobAccepter(location: loc)
                     self.service.getUserInfo(hash: self.accepterHash!, completion: { (user) in
@@ -131,10 +131,7 @@ extension SellVC: Constrainable{
     @objc func updateAccepterLocations(){
         
         service.getLiveLocation(hash: self.accepterHash!) { (location) in
-            
-            UIView.animate(withDuration: 4.5, delay: 0, options: .curveLinear, animations: {
-                self.jobAccepterAnnotation.coordinate = location
-            }, completion: nil)
+            self.jobAccepterAnnotation.coordinate = location
         }
     }
     

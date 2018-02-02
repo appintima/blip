@@ -16,13 +16,13 @@ class TBTNavigationVC: NavigationViewController, NavigationViewControllerDelegat
     var job: Job!
     var locationManager = CLLocationManager()
     let service = ServiceCalls()
-    var timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateAccepterLocation), userInfo: nil, repeats: true)
+    var timer: Timer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
         useCurrentLocations()
-        self.timer.fire()
+        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateAccepterLocation), userInfo: nil, repeats: true)
         // Do any additional setup after loading the view.
     }
 
