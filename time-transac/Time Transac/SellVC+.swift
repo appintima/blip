@@ -60,7 +60,7 @@ extension SellVC: Constrainable{
     
     func centerCameraOnJobAccepter(location: CLLocationCoordinate2D){
         
-        self.camera.altitude = CLLocationDistance(60000)
+        self.camera.altitude = CLLocationDistance(70000)
         self.camera.centerCoordinate = location
         self.camera.pitch = CGFloat(0)
         self.MapView.setCamera(camera, withDuration: 2, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)) {
@@ -131,7 +131,9 @@ extension SellVC: Constrainable{
     @objc func updateAccepterLocations(){
         
         service.getLiveLocation(hash: self.accepterHash!) { (location) in
+            self.camera.centerCoordinate = location
             self.jobAccepterAnnotation.coordinate = location
+            self.MapView.setCamera(self.camera, withDuration: 6, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear), completionHandler: nil)
         }
     }
     
