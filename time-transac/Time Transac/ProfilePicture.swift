@@ -19,6 +19,7 @@ class ProfilePicture: UIViewController, UIImagePickerControllerDelegate, UINavig
     let helper = HelperFunctions()
     var userRef: DatabaseReference!
     var userUploadedPicture = false
+    var appDelegate:AppDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,11 +37,21 @@ class ProfilePicture: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        gradientView.startAnimation()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        gradientView.startAnimation()
+        appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        appDelegate = nil
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        print("Second")
     }
     
     @objc func imageTapped(gesture: UIGestureRecognizer) {
@@ -94,7 +105,7 @@ class ProfilePicture: UIViewController, UIImagePickerControllerDelegate, UINavig
                             return
                         }
                     })
-                    let imgValues = ["photoURL":profileImgURL]
+                    let imgValues:[String:Any] = ["photoURL":profileImgURL!]
                     self.userRef.updateChildValues(imgValues)
                 })
                 self.performSegue(withIdentifier: "endSignUp", sender: nil)

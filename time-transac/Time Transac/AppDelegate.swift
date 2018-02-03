@@ -16,7 +16,11 @@ import RevealingSplashView
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate{
-    
+    var connectivity = Connectivity()
+    var lastUserHash: String!
+    var dbRef:DatabaseReference!{
+        return Database.database().reference()
+    }
     var isLaunched = false
     var window: UIWindow?
     var counter = 60
@@ -40,10 +44,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         STPPaymentConfiguration.shared().appleMerchantIdentifier = "merchant.online.intima"
         
         
+        if(Auth.auth().currentUser != nil && Auth.auth().currentUser?.photoURL == nil){
+            
+            if let user = Auth.auth().currentUser{
+                let hash = MD5(string: user.email!)
+                self.lastUserHash = hash
+                self.dbRef.child("Users").child(hash).removeValue()
+                user.delete(completion: { (error) in
+                    if let err = error{
+                        print(err.localizedDescription)
+                        return
+                    }
+                })
+            }
+        }
 
-        if (Auth.auth().currentUser != nil && (Auth.auth().currentUser?.isEmailVerified)!){
+        else if (Auth.auth().currentUser != nil && (Auth.auth().currentUser?.isEmailVerified)!){
             self.goHome()
         }
+        
         else{
             let providerData = Auth.auth().currentUser?.providerData
             if providerData != nil{
@@ -70,6 +89,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         application.registerForRemoteNotifications()
         UIApplication.shared.applicationIconBadgeNumber = 0
+        
+        //check for connectivity
+        connectivity?.whenReachable = {_ in
+            DispatchQueue.main.async {
+                print("GOT INTERNET WHEN IT STARTED")
+            }
+        }
+        connectivity?.whenUnreachable = {_ in
+            DispatchQueue.main.async {
+                print("NO INTERNET WHEN I STARTED")
+            }
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(connectivityChanged), name: Notification.Name.reachabilityChanged, object: connectivity)
+        do{
+            try connectivity?.startNotifier()
+        }catch{
+            print("Could not start the notifier")
+        }
         
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
@@ -139,6 +176,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+
     }
     
     
@@ -179,6 +217,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         return digestData.map { String(format: "%02hhx", $0) }.joined()
+    }
+    
+    @objc func connectivityChanged(notification: Notification){
+        let connectivity = notification.object as! Connectivity
+        if (connectivity.connection == .wifi || connectivity.connection == .cellular){
+            print("REGAINED CONNECTION")
+        }else{
+            print("Connection Gone")
+        }
     }
     
 }

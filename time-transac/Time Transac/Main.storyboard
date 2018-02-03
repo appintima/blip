@@ -316,6 +316,32 @@
                                     <action selector="continueButtonEmail:" destination="JBy-TE-f5L" eventType="touchUpInside" id="w4H-6v-YP7"/>
                                 </connections>
                             </button>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QEG-MM-TcQ" customClass="RaisedButton" customModule="Material">
+                                <rect key="frame" x="65.5" y="439" width="244" height="40"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="17"/>
+                                <state key="normal" title="Continue">
+                                    <color key="titleColor" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="pulseColor">
+                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                        <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="title" value="Continue"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                                        <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="continueTwo:" destination="JBy-TE-f5L" eventType="touchUpInside" id="7hT-hc-Jqz"/>
+                                </connections>
+                            </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Xxz-fQ-0kB" customClass="TextField" customModule="Material">
                                 <rect key="frame" x="65.5" y="347" width="244" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="0.20077054790000001" colorSpace="calibratedWhite"/>
@@ -338,7 +364,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isClearIconButtonEnabled" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="continueOnTextField:" destination="JBy-TE-f5L" eventType="primaryActionTriggered" id="chn-ku-dzO"/>
+                                    <action selector="continueEnter:" destination="JBy-TE-f5L" eventType="primaryActionTriggered" id="qbd-Wm-6bc"/>
                                 </connections>
                             </textField>
                         </subviews>
@@ -349,8 +375,10 @@
                             <constraint firstItem="1q2-zA-484" firstAttribute="width" secondItem="qPa-kM-OyG" secondAttribute="width" multiplier="0.65" id="2rk-D8-kWo"/>
                             <constraint firstItem="CU9-d7-Kbf" firstAttribute="height" secondItem="qPa-kM-OyG" secondAttribute="height" multiplier="0.06" id="4Vl-IT-stO"/>
                             <constraint firstItem="Xxz-fQ-0kB" firstAttribute="top" secondItem="CU9-d7-Kbf" secondAttribute="bottom" constant="50" id="8AP-do-PBo"/>
+                            <constraint firstItem="QEG-MM-TcQ" firstAttribute="centerX" secondItem="qPa-kM-OyG" secondAttribute="centerX" id="8I9-RX-77z"/>
                             <constraint firstItem="CU9-d7-Kbf" firstAttribute="top" secondItem="pps-eW-0gd" secondAttribute="bottom" constant="30" id="8ZV-qb-rA8"/>
                             <constraint firstItem="2Cb-1u-QYd" firstAttribute="width" secondItem="qPa-kM-OyG" secondAttribute="width" multiplier="0.752" id="AqE-ad-wCR"/>
+                            <constraint firstItem="QEG-MM-TcQ" firstAttribute="top" secondItem="Xxz-fQ-0kB" secondAttribute="bottom" constant="52" id="ENC-s7-eKE"/>
                             <constraint firstItem="Eo5-SQ-uuh" firstAttribute="width" secondItem="qPa-kM-OyG" secondAttribute="width" multiplier="0.4" id="FFw-kB-kkq"/>
                             <constraint firstItem="LgM-HO-cgv" firstAttribute="top" secondItem="qPa-kM-OyG" secondAttribute="top" id="JfF-Az-egQ"/>
                             <constraint firstItem="1q2-zA-484" firstAttribute="top" secondItem="Xxz-fQ-0kB" secondAttribute="bottom" constant="52" id="LOv-1U-i56"/>
@@ -362,6 +390,7 @@
                             <constraint firstItem="HMX-lS-bCJ" firstAttribute="top" secondItem="LgM-HO-cgv" secondAttribute="bottom" id="XcY-FG-mEq"/>
                             <constraint firstItem="1q2-zA-484" firstAttribute="centerX" secondItem="qPa-kM-OyG" secondAttribute="centerX" id="aYw-WG-heS"/>
                             <constraint firstItem="CU9-d7-Kbf" firstAttribute="width" secondItem="qPa-kM-OyG" secondAttribute="width" multiplier="0.65" id="al8-bF-giL"/>
+                            <constraint firstItem="QEG-MM-TcQ" firstAttribute="height" secondItem="qPa-kM-OyG" secondAttribute="height" multiplier="0.06" id="dK5-Zz-6BC"/>
                             <constraint firstItem="2Cb-1u-QYd" firstAttribute="centerX" secondItem="qPa-kM-OyG" secondAttribute="centerX" id="el0-mG-gsX"/>
                             <constraint firstItem="pps-eW-0gd" firstAttribute="height" secondItem="qPa-kM-OyG" secondAttribute="height" multiplier="0.121439" id="euK-sX-bTL"/>
                             <constraint firstItem="Xxz-fQ-0kB" firstAttribute="width" secondItem="qPa-kM-OyG" secondAttribute="width" multiplier="0.65" id="hzZ-pS-smL"/>
@@ -371,11 +400,13 @@
                             <constraint firstItem="pps-eW-0gd" firstAttribute="width" secondItem="qPa-kM-OyG" secondAttribute="width" multiplier="0.584" id="nk1-t6-1HG"/>
                             <constraint firstItem="2Cb-1u-QYd" firstAttribute="top" secondItem="lt8-4f-c8I" secondAttribute="bottom" constant="25" id="oUw-hi-PDB"/>
                             <constraint firstItem="Xxz-fQ-0kB" firstAttribute="centerX" secondItem="qPa-kM-OyG" secondAttribute="centerX" id="qUh-L1-RUE"/>
+                            <constraint firstItem="QEG-MM-TcQ" firstAttribute="width" secondItem="qPa-kM-OyG" secondAttribute="width" multiplier="0.65" id="rmn-hQ-gWC"/>
                             <constraint firstItem="pps-eW-0gd" firstAttribute="centerX" secondItem="qPa-kM-OyG" secondAttribute="centerX" id="rxs-Ip-CWI"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="continueButtonEmail" destination="1q2-zA-484" id="Tyh-84-344"/>
+                        <outlet property="continueTwo" destination="QEG-MM-TcQ" id="2s9-wW-I8P"/>
                         <outlet property="emailCheckAnimation" destination="Eo5-SQ-uuh" id="Jg0-lG-Evw"/>
                         <outlet property="emailTF" destination="CU9-d7-Kbf" id="YZd-9a-WbZ"/>
                         <outlet property="gradientView" destination="LgM-HO-cgv" id="9qK-sg-LI7"/>

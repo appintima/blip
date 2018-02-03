@@ -82,12 +82,11 @@ class AddNameVC: UIViewController {
             if let destination = segue.destination as? EmailVerifyVC{
                 destination.firstName = firstNameTF.text
                 destination.lastName = lastNameTF.text
-                
             }
         }
     }
+    
     func prepareTitleTextField(){
-        
         self.firstNameTF.placeholderLabel.font = UIFont(name: "Century Gothic", size: 17)
         self.firstNameTF.font = UIFont(name: "Century Gothic", size: 17)
         self.firstNameTF.textColor = Color.white
@@ -100,25 +99,17 @@ class AddNameVC: UIViewController {
         self.lastNameTF.placeholder = "Last name"
         self.lastNameTF.placeholderActiveColor = Color.white
         self.lastNameTF.placeholderNormalColor = Color.white
-        
-        
     }
     
     func ERR_User_in_DataBase(){
-        
         let alert = UIAlertController(title: "Email Already In Use", message: "Try using another email", preferredStyle: UIAlertControllerStyle.alert)
-        
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {(action) in alert.dismiss(animated: true, completion: nil)}))
-        
         self.present(alert, animated: true, completion: nil)
     }
     
     func ERR_Empty_Fields(){
-        
         let alert = UIAlertController(title: "Empty Fields", message: "Fill In Required Fields", preferredStyle: UIAlertControllerStyle.alert)
-
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {(action) in alert.dismiss(animated: true, completion: nil)}))
-        
         self.present(alert, animated: true, completion: nil)
     }
 

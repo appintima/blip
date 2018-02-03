@@ -105,10 +105,6 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.isHidden = false
-        service.userRef.child("1d60df918b869349c8cb8bcc5466f3b2").observe(.childChanged) { (snap) in
-            print("test")
-            print(snap)
-        }
     }
     
 
