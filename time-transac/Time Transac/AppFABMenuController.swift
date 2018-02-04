@@ -68,12 +68,12 @@ extension AppFABMenuController {
     
     fileprivate func prepareUnconfirmedFabMenuItem() {
         unconfirmedItem = FABMenuItem()
-        unconfirmedItem.title = "Unconfirmed Jobs"
-        unconfirmedItem.fabButton.image = Icon.cm.bell
+        unconfirmedItem.title = "Profile"
+        unconfirmedItem.fabButton.image = Icon.cm.star
         unconfirmedItem.fabButton.tintColor = .white
         unconfirmedItem.fabButton.pulseColor = .white
         unconfirmedItem.fabButton.backgroundColor = Color.blue.base
-        unconfirmedItem.fabButton.addTarget(self, action: #selector(handleUnconfirmed(button:)), for: .touchUpInside)
+        unconfirmedItem.fabButton.addTarget(self, action: #selector(handleProfile(button:)), for: .touchUpInside)
     }
     
     fileprivate func preparePaymentMethodsItem() {
@@ -124,9 +124,9 @@ extension AppFABMenuController {
     }
     
     @objc
-    fileprivate func handleUnconfirmed(button: UIButton) {
+    fileprivate func handleProfile(button: UIButton) {
         
-//        self.transition(to: UnconfirmedVC())
+        
         fabMenu.fabButton?.animate(.rotate(0))
     }
     

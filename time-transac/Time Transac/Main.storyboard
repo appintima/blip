@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="911Fonts.com_CenturyGothicRegular__-_911fonts.com_fonts_mhpY.ttf">
+        <array key="Century Gothic.ttf">
             <string>CenturyGothic</string>
         </array>
         <array key="CenturyGothicBold.ttf">
@@ -745,7 +745,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2YM-CY-9Zr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1474" y="600"/>
+            <point key="canvasLocation" x="-690" y="600"/>
         </scene>
         <!--rootAfterLogin-->
         <scene sceneID="bqO-i4-RYp">
@@ -1794,11 +1794,11 @@
                                     <action selector="StartJobPressed:" destination="6LJ-8K-qtP" eventType="touchUpInside" id="geA-k0-YI5"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oCR-9u-kqb">
-                                <rect key="frame" x="92" y="96" width="250" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Press start to begin the job" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oCR-9u-kqb">
+                                <rect key="frame" x="65" y="104" width="250" height="76"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="22"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -1818,7 +1818,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pqf-82-jq3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1474" y="-980"/>
+            <point key="canvasLocation" x="-1474.4000000000001" y="-980.05997001499259"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="bHj-TS-fsO">
@@ -1932,6 +1932,27 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hew-xT-Oxk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="124" y="-101"/>
+        </scene>
+        <!--feedbackController-->
+        <scene sceneID="brV-uS-QEi">
+            <objects>
+                <viewController title="feedbackController" id="4jl-f7-vKQ" customClass="FeedbackController" customModule="Time_Transac" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="SSf-68-e2D"/>
+                        <viewControllerLayoutGuide type="bottom" id="MEa-SA-gZ7"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="SOx-oo-iWz" customClass="PastelView" customModule="Pastel">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.87196621190000001" green="0.44680542820000002" blue="0.38951410959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    </view>
+                    <connections>
+                        <outlet property="gradientView" destination="SOx-oo-iWz" id="6Mx-xn-rGM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8fT-Py-MMg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="943" y="-921"/>
         </scene>
         <!--endJobVC-->
         <scene sceneID="ROi-cO-KcO">

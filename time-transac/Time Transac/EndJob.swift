@@ -9,6 +9,9 @@
 import UIKit
 
 class EndJob: UIViewController {
+    
+    let service = ServiceCalls()
+    var job: Job!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,5 +24,10 @@ class EndJob: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func endJobPressed(){
+        
+        service.endJobPressed(job: self.job)
+        self.navigationController?.popToRootViewController(animated: true)
+    }
 
 }

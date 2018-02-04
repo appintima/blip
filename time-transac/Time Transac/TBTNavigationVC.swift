@@ -56,7 +56,7 @@ class TBTNavigationVC: NavigationViewController, NavigationViewControllerDelegat
     
     @objc func updateAccepterLocation(){
         
-        print("Entered here")
+        print("updating accepter location")
         if let location = self.locationManager.location?.coordinate{
             service.updateJobAccepterLocation(location: location)
         }
