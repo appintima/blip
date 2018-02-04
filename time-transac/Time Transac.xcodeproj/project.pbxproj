@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3B0FC3FF1F182DDF00ED88C6 /* JobCandidate.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B0FC3FD1F182DDF00ED88C6 /* JobCandidate.xib */; };
 		3B0FC4051F2043FE00ED88C6 /* SellVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0FC4041F2043FE00ED88C6 /* SellVC.swift */; };
 		3B0FC4081F2477AC00ED88C6 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0FC4071F2477AB00ED88C6 /* LocationManager.swift */; };
 		3B0FC40B1F247F7B00ED88C6 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B0FC40A1F247F7B00ED88C6 /* MapKit.framework */; };
@@ -15,7 +14,6 @@
 		3B1EC3011EFC888A00182029 /* ServiceCalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1EC3001EFC888A00182029 /* ServiceCalls.swift */; };
 		3B1EC3031EFC915700182029 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1EC3021EFC915700182029 /* LoginVC.swift */; };
 		3B2673C82012823400519397 /* SellVC+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2673C72012823400519397 /* SellVC+.swift */; };
-		3B4DE41D1FFB4C33006F7F83 /* ApplicantsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4DE41C1FFB4C33006F7F83 /* ApplicantsVC.swift */; };
 		3B4DE41F1FFC7304006F7F83 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4DE41E1FFC7303006F7F83 /* AppError.swift */; };
 		3B5371862021773D0020F3B1 /* PasswordReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5371852021773D0020F3B1 /* PasswordReset.swift */; };
 		3B5371D72023C8290020F3B1 /* TestMGLNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5371D62023C8290020F3B1 /* TestMGLNav.swift */; };
@@ -41,9 +39,9 @@
 		5F23C5A5201FB46D0057DC30 /* MGLMapView+CustomAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F23C5A4201FB46D0057DC30 /* MGLMapView+CustomAdditions.m */; };
 		5F23C5A7202104270057DC30 /* RatingAnimationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F23C5A6202104270057DC30 /* RatingAnimationExtension.swift */; };
 		5F24F46220086CCF005AD28A /* UIWindowTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F24F46120086CCF005AD28A /* UIWindowTransitions.swift */; };
+		5F411095202662730006A594 /* FeedbackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F411094202662730006A594 /* FeedbackController.swift */; };
 		5FB8A52B2023AA3000B5FE07 /* WaypointConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB8A52A2023AA3000B5FE07 /* WaypointConfirmationViewController.swift */; };
 		5FD00AAF20092649004CFD9E /* onboarding.json in Resources */ = {isa = PBXBuildFile; fileRef = 5FD00AAE20092649004CFD9E /* onboarding.json */; };
-		5FD263A32003104D004B1978 /* JobCandidate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FD263A22003104D004B1978 /* JobCandidate.swift */; };
 		A4CEFDD9D0F6BA8F7BCA84C5 /* Pods_Time_TransacUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81FF9CB0337E42194F0583EF /* Pods_Time_TransacUITests.framework */; };
 		F30136F21F2CF3590023828A /* RootPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30136F11F2CF3590023828A /* RootPageViewController.swift */; };
 		F30136F51F2D045D0023828A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F30136F31F2D045D0023828A /* AVFoundation.framework */; };
@@ -54,7 +52,6 @@
 		F303373C1F36119C00A4E499 /* Check2.json in Resources */ = {isa = PBXBuildFile; fileRef = F303373B1F36119C00A4E499 /* Check2.json */; };
 		F305C7081F68C90800D8C296 /* navigationBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F305C7071F68C90700D8C296 /* navigationBarViewController.swift */; };
 		F30C07DD1FF9AA57009FC572 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30C07DC1FF9AA56009FC572 /* HelperFunctions.swift */; };
-		F3110CD41F3A7AF900BACAE9 /* ApplicationTabsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3110CD31F3A7AF900BACAE9 /* ApplicationTabsController.swift */; };
 		F3138B5C1FE6B3A300E690AB /* ProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3138B5B1FE6B3A300E690AB /* ProfilePicture.swift */; };
 		F33034481FEF4D1A004C9C30 /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33034471FEF4D1A004C9C30 /* MyAPIClient.swift */; };
 		F33034511FEF80F3004C9C30 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F330344F1FEF80F2004C9C30 /* SettingsViewController.swift */; };
@@ -62,7 +59,6 @@
 		F33BC6492022D61C00F5E60B /* EndJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33BC6482022D61C00F5E60B /* EndJob.swift */; };
 		F33C83921F6B8220003157B7 /* endSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33C83911F6B8220003157B7 /* endSignUpVC.swift */; };
 		F34760D21F32A726001C24A5 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F34760D11F32A726001C24A5 /* Launch Screen.storyboard */; };
-		F34F56022016DB6E00E45226 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34F56012016DB6D00E45226 /* MainVC.swift */; };
 		F355FE582018245C00A7F258 /* StartJobNavigationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F355FE572018245C00A7F258 /* StartJobNavigationVC.swift */; };
 		F35787E4201D057000D29006 /* IntimaUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35787E3201D057000D29006 /* IntimaUser.swift */; };
 		F35787E7201EBA9700D29006 /* endJobNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35787E6201EBA9700D29006 /* endJobNavigation.swift */; };
@@ -85,7 +81,6 @@
 		F37B4E882022AEBF00E3A71D /* JobOwnerStartJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37B4E872022AEBE00E3A71D /* JobOwnerStartJob.swift */; };
 		F3837F821FEE1F0A00EC67DB /* bouncy_mapmaker.json in Resources */ = {isa = PBXBuildFile; fileRef = F3837F811FEE1F0A00EC67DB /* bouncy_mapmaker.json */; };
 		F3938E2D1F6A45A3006634E2 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3938E2C1F6A45A3006634E2 /* GradientView.swift */; };
-		F396339520179FBB00DC765E /* BottomVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F396339420179FBB00DC765E /* BottomVC.swift */; };
 		F3A2006A1FF32824005F7286 /* CustomAPIAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A200691FF32824005F7286 /* CustomAPIAdapter.swift */; };
 		F3CA7AF21FEB43F800862F7A /* AppTabsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CA7AF11FEB43F800862F7A /* AppTabsController.swift */; };
 		F3CA7AF61FEB5DD900862F7A /* AppFABMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CA7AF51FEB5DD900862F7A /* AppFABMenuController.swift */; };
@@ -122,7 +117,6 @@
 
 /* Begin PBXFileReference section */
 		3B0FA97B1FED934600DD2556 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
-		3B0FC3FD1F182DDF00ED88C6 /* JobCandidate.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JobCandidate.xib; sourceTree = "<group>"; };
 		3B0FC4041F2043FE00ED88C6 /* SellVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellVC.swift; sourceTree = "<group>"; };
 		3B0FC4071F2477AB00ED88C6 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		3B0FC40A1F247F7B00ED88C6 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -130,7 +124,6 @@
 		3B1EC3001EFC888A00182029 /* ServiceCalls.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceCalls.swift; sourceTree = "<group>"; };
 		3B1EC3021EFC915700182029 /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		3B2673C72012823400519397 /* SellVC+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SellVC+.swift"; sourceTree = "<group>"; };
-		3B4DE41C1FFB4C33006F7F83 /* ApplicantsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicantsVC.swift; sourceTree = "<group>"; };
 		3B4DE41E1FFC7303006F7F83 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		3B5371852021773D0020F3B1 /* PasswordReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordReset.swift; sourceTree = "<group>"; };
 		3B5371D62023C8290020F3B1 /* TestMGLNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMGLNav.swift; sourceTree = "<group>"; };
@@ -164,9 +157,9 @@
 		5F23C5A4201FB46D0057DC30 /* MGLMapView+CustomAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MGLMapView+CustomAdditions.m"; sourceTree = "<group>"; };
 		5F23C5A6202104270057DC30 /* RatingAnimationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingAnimationExtension.swift; sourceTree = "<group>"; };
 		5F24F46120086CCF005AD28A /* UIWindowTransitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindowTransitions.swift; sourceTree = "<group>"; };
+		5F411094202662730006A594 /* FeedbackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackController.swift; sourceTree = "<group>"; };
 		5FB8A52A2023AA3000B5FE07 /* WaypointConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaypointConfirmationViewController.swift; sourceTree = "<group>"; };
 		5FD00AAE20092649004CFD9E /* onboarding.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = onboarding.json; sourceTree = "<group>"; };
-		5FD263A22003104D004B1978 /* JobCandidate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobCandidate.swift; sourceTree = "<group>"; };
 		6861349CE4FCFD95DB24BC6C /* Pods-Time Transac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Time Transac.release.xcconfig"; path = "Pods/Target Support Files/Pods-Time Transac/Pods-Time Transac.release.xcconfig"; sourceTree = "<group>"; };
 		7D8852E911B1E1DABF851838 /* Pods-Time TransacUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Time TransacUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Time TransacUITests/Pods-Time TransacUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		81FF9CB0337E42194F0583EF /* Pods_Time_TransacUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Time_TransacUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -184,7 +177,6 @@
 		F303373B1F36119C00A4E499 /* Check2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Check2.json; sourceTree = "<group>"; };
 		F305C7071F68C90700D8C296 /* navigationBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = navigationBarViewController.swift; sourceTree = "<group>"; };
 		F30C07DC1FF9AA56009FC572 /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
-		F3110CD31F3A7AF900BACAE9 /* ApplicationTabsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationTabsController.swift; sourceTree = "<group>"; };
 		F3138B5B1FE6B3A300E690AB /* ProfilePicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePicture.swift; sourceTree = "<group>"; };
 		F33034471FEF4D1A004C9C30 /* MyAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAPIClient.swift; sourceTree = "<group>"; };
 		F330344F1FEF80F2004C9C30 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -192,7 +184,6 @@
 		F33BC6482022D61C00F5E60B /* EndJob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndJob.swift; sourceTree = "<group>"; };
 		F33C83911F6B8220003157B7 /* endSignUpVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = endSignUpVC.swift; sourceTree = "<group>"; };
 		F34760D11F32A726001C24A5 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		F34F56012016DB6D00E45226 /* MainVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
 		F355FE572018245C00A7F258 /* StartJobNavigationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartJobNavigationVC.swift; sourceTree = "<group>"; };
 		F35787E3201D057000D29006 /* IntimaUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntimaUser.swift; sourceTree = "<group>"; };
 		F35787E6201EBA9700D29006 /* endJobNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = endJobNavigation.swift; sourceTree = "<group>"; };
@@ -215,7 +206,6 @@
 		F37B4E872022AEBE00E3A71D /* JobOwnerStartJob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobOwnerStartJob.swift; sourceTree = "<group>"; };
 		F3837F811FEE1F0A00EC67DB /* bouncy_mapmaker.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = bouncy_mapmaker.json; sourceTree = "<group>"; };
 		F3938E2C1F6A45A3006634E2 /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
-		F396339420179FBB00DC765E /* BottomVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomVC.swift; sourceTree = "<group>"; };
 		F3A200691FF32824005F7286 /* CustomAPIAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAPIAdapter.swift; sourceTree = "<group>"; };
 		F3CA7AF11FEB43F800862F7A /* AppTabsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTabsController.swift; sourceTree = "<group>"; };
 		F3CA7AF51FEB5DD900862F7A /* AppFABMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFABMenuController.swift; sourceTree = "<group>"; };
@@ -412,7 +402,6 @@
 				F3DD81F81FC3BD34000826F8 /* AppSnackbarController.swift */,
 				F3CA7AF11FEB43F800862F7A /* AppTabsController.swift */,
 				3B71C4FE1EE6836800746DEE /* AddNameVC.swift */,
-				F34F56012016DB6D00E45226 /* MainVC.swift */,
 				3B1EC3021EFC915700182029 /* LoginVC.swift */,
 				3B5371852021773D0020F3B1 /* PasswordReset.swift */,
 				3B0FC4041F2043FE00ED88C6 /* SellVC.swift */,
@@ -421,7 +410,6 @@
 				F330344F1FEF80F2004C9C30 /* SettingsViewController.swift */,
 				F30136F71F2D04CB0023828A /* Lgsupage.swift */,
 				F3CD40911F37DA08001DE153 /* EmailVerifyVC.swift */,
-				F3110CD31F3A7AF900BACAE9 /* ApplicationTabsController.swift */,
 				F305C7071F68C90700D8C296 /* navigationBarViewController.swift */,
 				F3138B5B1FE6B3A300E690AB /* ProfilePicture.swift */,
 				F33C83911F6B8220003157B7 /* endSignUpVC.swift */,
@@ -432,14 +420,12 @@
 				F3CA7AF51FEB5DD900862F7A /* AppFABMenuController.swift */,
 				F33034471FEF4D1A004C9C30 /* MyAPIClient.swift */,
 				F3A200691FF32824005F7286 /* CustomAPIAdapter.swift */,
-				3B4DE41C1FFB4C33006F7F83 /* ApplicantsVC.swift */,
 				5F00B2BD2001FB7400749398 /* SplashViewController.swift */,
-				5FD263A22003104D004B1978 /* JobCandidate.swift */,
 				5F1F8DA62003F17200E20AB0 /* OnboardingVCViewController.swift */,
-				F396339420179FBB00DC765E /* BottomVC.swift */,
 				F355FE5B201824F100A7F258 /* StartJob */,
 				F37B4E872022AEBE00E3A71D /* JobOwnerStartJob.swift */,
 				F33BC6482022D61C00F5E60B /* EndJob.swift */,
+				5F411094202662730006A594 /* FeedbackController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -448,7 +434,6 @@
 			isa = PBXGroup;
 			children = (
 				F3CE9C111FF8506A007E5C4A /* Constrainable.swift */,
-				3B0FC3FD1F182DDF00ED88C6 /* JobCandidate.xib */,
 				F30136F11F2CF3590023828A /* RootPageViewController.swift */,
 				F30137111F2D479E0023828A /* CustomUIBorderControls.swift */,
 				F3E55F7A1F30033E003D3338 /* TapScreenToCloseKeyboardViewController.swift */,
@@ -643,7 +628,6 @@
 				F357C2E81F35624B00963A35 /* check.json in Resources */,
 				F30281C71F944C670062093C /* 5_stars.json in Resources */,
 				F375B3151F65ACA5002F5538 /* GoogleService-Info.plist in Resources */,
-				3B0FC3FF1F182DDF00ED88C6 /* JobCandidate.xib in Resources */,
 				F357C2EE1F3562A400963A35 /* lgsu.mp4 in Resources */,
 				F357C2E41F35622900963A35 /* simple_outline_lock_.json in Resources */,
 				F3CA7CD91FEC93D500862F7A /* location.json in Resources */,
@@ -786,7 +770,6 @@
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/IBAnimatable/IBAnimatable.framework",
-				"${BUILT_PRODUCTS_DIR}/ISHPullUp/ISHPullUp.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework.dSYM",
@@ -827,7 +810,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IBAnimatable.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ISHPullUp.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
 				"${DWARF_DSYM_FOLDER_PATH}/Mapbox.framework.dSYM",
@@ -941,6 +923,7 @@
 				F3CE9C121FF8506A007E5C4A /* Constrainable.swift in Sources */,
 				5F24F46220086CCF005AD28A /* UIWindowTransitions.swift in Sources */,
 				F3CD40921F37DA08001DE153 /* EmailVerifyVC.swift in Sources */,
+				5F411095202662730006A594 /* FeedbackController.swift in Sources */,
 				F30C07DD1FF9AA57009FC572 /* HelperFunctions.swift in Sources */,
 				F3D9ED1A1F76FD2C00332237 /* ConfirmProfilePageVC.swift in Sources */,
 				3B71C5C01EF3C22900746DEE /* Skill.swift in Sources */,
@@ -958,20 +941,15 @@
 				3B71C5BC1EF35D8300746DEE /* AllJobs.swift in Sources */,
 				F3E55F7B1F30033E003D3338 /* TapScreenToCloseKeyboardViewController.swift in Sources */,
 				5F00B2BE2001FB7400749398 /* SplashViewController.swift in Sources */,
-				F34F56022016DB6E00E45226 /* MainVC.swift in Sources */,
 				F33C83921F6B8220003157B7 /* endSignUpVC.swift in Sources */,
-				F396339520179FBB00DC765E /* BottomVC.swift in Sources */,
 				F3CA7AF21FEB43F800862F7A /* AppTabsController.swift in Sources */,
 				F30136F21F2CF3590023828A /* RootPageViewController.swift in Sources */,
 				3B71C4FD1EE6836800746DEE /* AppDelegate.swift in Sources */,
 				F3938E2D1F6A45A3006634E2 /* GradientView.swift in Sources */,
-				5FD263A32003104D004B1978 /* JobCandidate.swift in Sources */,
-				3B4DE41D1FFB4C33006F7F83 /* ApplicantsVC.swift in Sources */,
 				5F23C5A7202104270057DC30 /* RatingAnimationExtension.swift in Sources */,
 				F33BC6492022D61C00F5E60B /* EndJob.swift in Sources */,
 				F35787E4201D057000D29006 /* IntimaUser.swift in Sources */,
 				5F23C5A5201FB46D0057DC30 /* MGLMapView+CustomAdditions.m in Sources */,
-				F3110CD41F3A7AF900BACAE9 /* ApplicationTabsController.swift in Sources */,
 				F3619A241F3793EB00FCA94B /* CustomAnimationHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

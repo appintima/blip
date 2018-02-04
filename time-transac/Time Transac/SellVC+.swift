@@ -43,7 +43,7 @@ extension SellVC: Constrainable{
     }
     
     
-    func prepareBannerForJobAccepted(user: IntimaUser){
+    func prepareBannerForJobAccepted(user: IntimaUser, job: Job){
         
         let profilePicture = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
         profilePicture.ApplyOuterShadowToView()
@@ -51,20 +51,21 @@ extension SellVC: Constrainable{
         profilePicture.kf.setImage(with: user.photoURL)
         let banner = NotificationBanner(title: "Job Accepted", subtitle: "\(user.name!) has accepted your job", leftView: profilePicture, style: .info)
         banner.show(bannerPosition: .bottom)
-        banner.autoDismiss = false
-        banner.onSwipeUp = {
-            self.performSegue(withIdentifier: "goToJobOwnerStartJob", sender: self)
-        }
+        banner.autoDismiss = true
+    }
+    
+    func prepareBannerForJobStarted(){
+        
         
     }
     
     func centerCameraOnJobAccepter(location: CLLocationCoordinate2D){
         
-        self.camera.altitude = CLLocationDistance(70000)
+        self.camera.altitude = CLLocationDistance(100000)
         self.camera.centerCoordinate = location
         self.camera.pitch = CGFloat(0)
         self.MapView.setCamera(camera, withDuration: 2, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)) {
-            self.camera.altitude = CLLocationDistance(1000)
+            self.camera.altitude = CLLocationDistance(3000)
             self.camera.pitch = CGFloat(60)
             self.MapView.setCamera(self.camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         }
@@ -88,32 +89,40 @@ extension SellVC: Constrainable{
         }
         
         self.service.getJobsFromFirebase(MapView: self.MapView) { annotationDict  in
-            print(annotationDict)
             self.allAnnotations = annotationDict
         }
         
-        service.checkJobAcceptedStatus { (code, hash) in
+        self.service.checkJobAcceptedStatus { (code, hash) in
             if code == 1{
                 // Make sure he is in startJobNavigation, but dont segue because there might be two different segues happning at same time
             }
             else if code == 2{
                 
-                self.service.getUserInfo(hash: hash!, completion: { (user) in
-                    self.prepareBannerForJobAccepted(user: user!)
+                self.service.getUserInfo(hash: hash!, completion: { (userObject) in
+                    if let user = userObject{
+                        self.accepterUserObject = user
+                        self.service.getJobPostedByCurrentUser(completion: { (jobPost) in
+                            self.currentJobPost = jobPost
+                            self.prepareBannerForJobAccepted(user: user, job: jobPost)
+                            if let annotations = self.MapView.annotations{
+                                self.MapView.removeAnnotations(annotations)
+                            }
+                            self.accepterHash = hash
+                            self.service.getLiveLocationOnce(hash: hash!, completion: { (loc) in
+                                self.jobAccepterAnnotation.photoURL = user.photoURL
+                                self.MapView.addAnnotation(self.jobAccepterAnnotation)
+                                self.jobAccepterAnnotation.coordinate = loc
+                                self.centerCameraOnJobAccepter(location: loc)
+                                Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.updateAccepterLocations), userInfo: nil, repeats: true)
+                            })
+                        })
+                    }
+                    else{
+                        
+                        let errorPopup = PopupDialog(title: "Error", message: "Could not get job accepter's information from the database")
+                        self.present(errorPopup, animated: true, completion: nil)
+                    }
                 })
-                if let annotations = self.MapView.annotations{
-                    self.MapView.removeAnnotations(annotations)
-                }
-                self.accepterHash = hash
-                self.service.getLiveLocationOnce(hash: self.accepterHash!, completion: { (loc) in
-                    self.jobAccepterAnnotation.coordinate = loc
-                    self.centerCameraOnJobAccepter(location: loc)
-                    self.service.getUserInfo(hash: self.accepterHash!, completion: { (user) in
-                        self.jobAccepterAnnotation.photoURL = user?.photoURL
-                        self.MapView.addAnnotation(self.jobAccepterAnnotation)
-                    })
-                })
-                Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.updateAccepterLocations), userInfo: nil, repeats: true)
             }
         }
         
@@ -125,6 +134,63 @@ extension SellVC: Constrainable{
                 }
             }
         }
+        
+        service.onAccepterPressedReady { (code) in
+            if code == 0{
+                if let accepter = self.accepterUserObject{
+                    let profilePicture = UIImageView()
+                    profilePicture.kf.setImage(with: accepter.photoURL)
+                    let banner = NotificationBanner(title: "\(accepter.name!) is ready", subtitle: "Tap here to begin the job", leftView: profilePicture, style: .info)
+                    banner.show()
+                    
+                    banner.autoDismiss = false
+                    banner.dismissOnTap = false
+                    banner.dismissOnSwipeUp = false
+                    banner.onTap = {
+                        
+                        banner.dismiss()
+                        self.service.ownerReady(job: self.currentJobPost!, completion: { (accepterDeviceToken) in
+                            let title = "Intima"
+                            let displayName = (Auth.auth().currentUser?.displayName)!
+                            let body = "\(displayName) is ready for you to start the job"
+                            let device = accepterDeviceToken!
+                            var headers: HTTPHeaders = HTTPHeaders()
+                            headers = ["Content-Type":"application/json", "Authorization":"key=\(AppDelegate.SERVERKEY)"]
+                            
+                            let notification = ["to":"\(device)", "notification":["body":body, "title":title, "badge":1, "sound":"default"]] as [String : Any]
+                            
+                            Alamofire.request(AppDelegate.NOTIFICATION_URL as URLConvertible, method: .post as HTTPMethod, parameters: notification, encoding: JSONEncoding.default, headers: headers).responseJSON(completionHandler: { (response) in
+                                
+                                if let err = response.error{
+                                    print(err.localizedDescription)
+                                }
+                                
+                            })
+                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ownerReadyNotification"), object: nil)
+                            
+                        })
+                    }
+                }
+                
+            }
+        }
+        
+        service.onJobBegun { (code) in
+            
+            if code == 0{
+                let newCheck = LOTAnimationView(name: "check")
+                let banner = NotificationBanner(title: "Job begun", subtitle: "Your assigned job has begun", leftView: newCheck, style: .info)
+                newCheck.play()
+                banner.show()
+                banner.dismissOnSwipeUp = false
+                banner.dismissOnTap = false
+                banner.autoDismiss = true
+                UIView.animate(withDuration: 1.5, animations: {
+                    self.searchBar.alpha = 0
+                    self.postJobButton.alpha = 0
+                })
+            }
+        }
     }
 
     
@@ -133,7 +199,6 @@ extension SellVC: Constrainable{
         service.getLiveLocation(hash: self.accepterHash!) { (location) in
             self.camera.centerCoordinate = location
             self.jobAccepterAnnotation.coordinate = location
-            self.MapView.setCamera(self.camera, withDuration: 6, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear), completionHandler: nil)
         }
     }
     

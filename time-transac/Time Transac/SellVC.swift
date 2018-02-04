@@ -19,10 +19,9 @@ import Stripe
 import SHSearchBar
 import Kingfisher
 import NotificationBannerSwift
-import ISHPullUp
 
 
-class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, STPPaymentContextDelegate, SHSearchBarDelegate, ISHPullUpContentDelegate {
+class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, STPPaymentContextDelegate, SHSearchBarDelegate {
 
     
     @IBOutlet weak var rootView: UIView!
@@ -74,8 +73,8 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
     let postedJobAnimation = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
     let check = LOTAnimationView(name: "check")
     let jobAccepterAnnotation = CustomMGLAnnotation()
-
-    
+    var currentJobPost: Job?
+    var accepterUserObject: IntimaUser?
     
     ////////////////////////Functions associated with the controller go here//////////////////////////
     
@@ -85,17 +84,11 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
         MapView.compassView.isHidden = true
         self.navigationController?.navigationBar.isHidden = true
         prepareCancelButtons()
-        dbRef = Database.database().reference()
         self.hideKeyboardWhenTappedAround()
         prepareTitleTextField()
         preparePostJobButton()
         useCurrentLocations()
         prepareJobForm()
-        if #available(iOS 11.0, *) {
-            MapView.preservesSuperviewLayoutMargins = false
-        } else {
-            MapView.preservesSuperviewLayoutMargins = true
-        }
         self.prepareSearchBar()
         self.prepareBannerLeftView()
 
@@ -107,16 +100,6 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
         self.navigationController?.navigationBar.isHidden = false
     }
     
-
-    @IBAction func buttonPressedForProfile(_ sender: UIButton) {
-      
-//        service.getApplicantProfile(emailHash: self.applicantEHash) { (userInfo) in
-//            if userInfo != nil{
-//                self.applicantInfo = userInfo
-//                self.performSegue(withIdentifier: "goToProfileToCancel", sender: nil)
-//            }
-//        }
-    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToStartJob"{
@@ -124,14 +107,13 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
                 dest.job = self.acceptedJob
             }
         }
-        if segue.identifier == "goToOwnerStartJob"{
+        if segue.identifier == "goToJobOwnerStartJob"{
             if let dest = segue.destination as? JobOwnerStartJob{
                 service.getJobPostedByCurrentUser(completion: { (job) in
                     dest.job = job
                 })
             }
         }
-        
     }
 
     
@@ -151,46 +133,23 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
-        
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
-
         self.prepareMap()
-
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-
     }
     
 
     //When the postJob red button is pressed
     @IBAction func postJobPressed(_ sender: Any) {
     
-//        self.service.checkUserLastPost { (bool) in
-//            if !bool{
-                self.postJobButton.isHidden = true
-                self.jobDetailsConstraint.constant = 77
-                UIView.animate(withDuration: 0.5, animations: {self.view.layoutIfNeeded()})
-//
-//            }else{
-//
-//                let title = "You Already posted a task"
-//                let message = ""
-//                // Create the dialog
-//
-//                let popup = PopupDialog(title: title, message: message)
-//                // Create buttons
-//                let buttonOne = CancelButton(title: "Cancel") {
-//                    print("Job Cancelled")
-//                }
-//                popup.addButton(buttonOne)
-//                self.present(popup, animated: true, completion: nil)
-//            }
-//        }
+        self.postJobButton.isHidden = true
+        self.jobDetailsConstraint.constant = 77
+        UIView.animate(withDuration: 0.5, animations: {self.view.layoutIfNeeded()})
  
     }
     
@@ -263,7 +222,7 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
         
     }
     
-    //Loads the bouncing animation for the map annotation
+    //Loads the profilePicture for the map annotation
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
         // This example is only concerned with point annotations.
         guard annotation is MGLPointAnnotation else {
@@ -280,7 +239,6 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
             annotationView.addSubview(profileImage)
             annotationView.cornerRadius = annotationView.frame.size.height/2
             annotationView.isUserInteractionEnabled = true
-            
         }
         return annotationView
         
@@ -434,18 +392,29 @@ extension SellVC {
         
         let price = (Double(wage )!)*(Double(time )!)
         let priceForStripe = Int(price*100)
-        let title = "Post Job?"
-        let message = "We will charge you " + "$" + "\(price)" + " for your job plus a $1.00 fee for the posting to avoid spam. You can cancel your job at anytime before it has been confirmed and begun, excluding the posting fee"
+        let title = "Confirm"
+        let message = "We will authorize " + "$" + "\(price)" + " for your job. You can cancel your job at anytime before it has been confirmed and begun. If you cancel after it has been accepted, a small fee of $ 5.00 will be charged."
         
         let popup = PopupDialog(title: title, message: message)
         
         let continueButton = DefaultButton(title: "Continue", dismissOnTap: true) {
             
+            let loadingView = UIView(frame: CGRect(x: self.view.frame.size.width - 100, y: self.view.frame.size.height - 100, width: 200, height: 200))
+            loadingView.tag = 100
+            let loadingAnimation = LOTAnimationView(name: "loading")
+            loadingView.handledAnimation(Animation: loadingAnimation)
+            self.view.addSubview(loadingView)
+            loadingAnimation.play()
+            loadingAnimation.loopAnimation = true
             //Attempt to charge a payment
             self.submitJobButton.isHidden = true
             //LoadingAnimation initialize and play
             MyAPIClient.sharedClient.completeCharge(amount: priceForStripe, completion: { charge_id in
                 //If no error when paying
+                loadingAnimation.stop()
+                if let loadingViewAfterStripe = self.view.viewWithTag(100){
+                    loadingViewAfterStripe.removeFromSuperview()
+                }
                 if charge_id != nil{
                     //
                     self.service.addJobToFirebase(jobTitle: self.jobTitleTF.text!, jobDetails: self.jobDetailsTF.text!, pricePerHour: self.pricePerHour.text!, numberOfHours: self.numberOfHoursTF.text!, locationCoord: self.currentLocation, chargeID: charge_id!)
@@ -540,21 +509,6 @@ extension SellVC {
         numberOfHoursTF.text = ""
         jobTitleTF.text = ""
         jobDetailsTF.text = ""
-    }
-    
-    func pullUpViewController(_ pullUpViewController: ISHPullUpViewController, update edgeInsets: UIEdgeInsets, forContentViewController contentVC: UIViewController) {
-        
-        if #available(iOS 11.0, *) {
-            additionalSafeAreaInsets = edgeInsets
-            rootView.layoutMargins = .zero
-        } else {
-            // update edgeInsets
-            rootView.layoutMargins = edgeInsets
-        }
-        
-        // call layoutIfNeeded right away to participate in animations
-        // this method may be called from within animation blocks
-        rootView.layoutIfNeeded()
     }
     
     

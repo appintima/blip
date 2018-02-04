@@ -75,11 +75,28 @@ class ServiceCalls{
     func getUserInfo(hash: String, completion: @escaping (IntimaUser?) -> ()){
         
         userRef.child(hash).observeSingleEvent(of: .value) { (userSnap) in
-            let user = IntimaUser(snapshot: userSnap)
-            completion(user)
+            if let user = IntimaUser(snapshot: userSnap){
+                completion(user)
+            }
+            else{
+                print(userSnap, "couldnt get user info from snapshot")
+            }
         }
     }
     
+    func getCurrentUserInfo(completion: @escaping(IntimaUser) -> ()){
+        
+        userRef.child(emailHash).observeSingleEvent(of: .value, with: { (userSnap) in
+            
+            if let user = IntimaUser(snapshot: userSnap){
+                completion(user)
+            }
+            
+            else{
+                print(userSnap, "Couldnt get current user info")
+            }
+        })
+    }
     
 
     func removedJobFromFirebase(completion: @escaping (Job?)->()){
@@ -206,6 +223,8 @@ class ServiceCalls{
             else{
                 completion(0) // if the current user is just a user who didnt accept a job or hasnt has his job accepted
             }
+            
+            // Need to add more status for if user is on job, has his job post started, etc
         })
         
     }
@@ -283,13 +302,14 @@ class ServiceCalls{
     func ownerReady(job:Job, completion: @escaping (String?)->()){
         jobsRef.child(job.jobID).updateChildValues(["ownerReady":true])
         jobsRef.child(job.jobID).updateChildValues(["started":true])
-        if let accepterHash = jobsRef.child(job.jobID).value(forKey: "isAcceptedBy") as? String{
-            print("HERE IS ACCEPTER ", accepterHash)
-            if let accepterDevice = userRef.child(accepterHash).value(forKey: "currentDevice") as? String{
-                completion(accepterDevice)
+        jobsRef.child(job.jobID).child("isAcceptedBy").observeSingleEvent(of: .value) { (hash) in
+            if let accepterHash = hash.value as? String{
+                self.userRef.child(accepterHash).child("currentDevice").observeSingleEvent(of: .value, with: { (deviceID) in
+                    if let device = deviceID.value as? String{
+                        completion(device)
+                    }
+                })
             }
-        }else{
-            print("NO ACCEPTER HASH")
         }
     }
     
@@ -300,19 +320,34 @@ class ServiceCalls{
             let lastPostSnapshot = user.childSnapshot(forPath: "LastPost")
             if let lastPost = lastPostSnapshot.value as? String{
                 self.jobsRef.child(lastPost).observeSingleEvent(of: .value) { (snapshot) in
-                    let job = Job(snapshot: snapshot)
-                    completion(job!)
+                    if let job = Job(snapshot: snapshot){
+                        completion(job)
+                    }
+                    else{
+                        print("Could not find job")
+                    }
                 }
             }
         }
+    }
+    
+    func endJobPressed(job: Job){
+        
+        userRef.child(emailHash).child("uAccepted").removeValue()
+        jobsRef.child(job.jobID).child("isCompleted").setValue(true)
+    }
+    
+    func confirmedJobEnd(){
+        
+        userRef.child(emailHash).child("LatestPostAccepted").removeValue()
+        userRef.child(emailHash).child("LastPost").removeValue()
     }
     
     func checkIfAccepterReady(completion: @escaping(Int) -> ()){
         
         getJobPostedByCurrentUser { (job) in
             
-            self.jobsRef.child(job.jobID).observe(.value, with: { (snapshot) in
-            
+            self.jobsRef.child(job.jobID).observeSingleEvent(of: .value, with: { (snapshot) in
                 let job = Job(snapshot: snapshot)
                 if (job?.accepterReady)!{
                     completion(1) // Code 1 means that the accepter is ready
@@ -322,6 +357,48 @@ class ServiceCalls{
                 }
             })
         }
+    }
+    
+    func onAccepterPressedReady(completion: @escaping(Int) ->()){
+        
+        jobsRefHandle = jobsRef.observe(.childChanged, with: { (jobSnap) in
+            let jobChanged = Job(snapshot: jobSnap)
+            if jobChanged?.jobOwnerEmailHash == self.emailHash{
+                jobSnap.ref.observe(.childChanged, with: { (snapshot) in
+        
+                    if snapshot.key == "accepterReady"{
+                        if (snapshot.value as? Bool)!{
+                            completion(0) // accepter Ready
+                        }
+                            
+                        else if !(snapshot.value as? Bool)!{
+                            completion(1) // accepter not ready
+                        }
+                    }
+                })
+            }
+        })
+    }
+    
+    func onJobBegun(completion: @escaping(Int) -> ()){
+        
+        jobsRefHandle = jobsRef.observe(.childChanged, with: { (jobSnap) in
+            let jobChanged = Job(snapshot: jobSnap)
+            if jobChanged?.jobOwnerEmailHash == self.emailHash{
+                jobSnap.ref.observe(.childAdded, with: { (snapshot) in
+
+                    if snapshot.key == "started"{
+                        if (snapshot.value as? Bool)!{
+                            completion(0) // Job Started
+                        }
+                            
+                        else if !(snapshot.value as? Bool)!{
+                            completion(1) // Job not started yet
+                        }
+                    }
+                })
+            }
+        })
     }
     
 }
