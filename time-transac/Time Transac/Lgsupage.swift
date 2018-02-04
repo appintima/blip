@@ -34,7 +34,7 @@ class Lgsupage: UIViewController {
     
     
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = true
+        
 
     }
 
@@ -50,6 +50,10 @@ class Lgsupage: UIViewController {
         
         super.viewDidLoad()
         self.dbRef = Database.database().reference()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if let hash = appDelegate.lastUserHash{
+            self.dbRef.child("Users").child(hash).removeValue()
+        }
         self.navigationController?.navigationBar.isHidden = true
         IntimaLabel.adjustsFontSizeToFitWidth = true
         IntimaLogo.handledAnimation(Animation: logoAnimation)

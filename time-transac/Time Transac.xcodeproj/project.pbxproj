@@ -20,6 +20,8 @@
 		3B5371D92023FF660020F3B1 /* TestNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5371D82023FF660020F3B1 /* TestNavigationViewController.swift */; };
 		3B5371DB202428D80020F3B1 /* TestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5371DA202428D80020F3B1 /* TestVC.swift */; };
 		3B5371DD2024A4730020F3B1 /* TBTNavigationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5371DC2024A4730020F3B1 /* TBTNavigationVC.swift */; };
+		3B53729B20250B1B0020F3B1 /* Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B53729A20250B1B0020F3B1 /* Connectivity.swift */; };
+		3B53729D20250B560020F3B1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B53729C20250B560020F3B1 /* SystemConfiguration.framework */; };
 		3B6B190A1FA4C3D700DC9134 /* UnconfirmedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6B19091FA4C3D700DC9134 /* UnconfirmedVC.swift */; };
 		3B71C4FD1EE6836800746DEE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71C4FC1EE6836800746DEE /* AppDelegate.swift */; };
 		3B71C4FF1EE6836800746DEE /* AddNameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71C4FE1EE6836800746DEE /* AddNameVC.swift */; };
@@ -128,6 +130,8 @@
 		3B5371D82023FF660020F3B1 /* TestNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestNavigationViewController.swift; sourceTree = "<group>"; };
 		3B5371DA202428D80020F3B1 /* TestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestVC.swift; sourceTree = "<group>"; };
 		3B5371DC2024A4730020F3B1 /* TBTNavigationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TBTNavigationVC.swift; sourceTree = "<group>"; };
+		3B53729A20250B1B0020F3B1 /* Connectivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connectivity.swift; sourceTree = "<group>"; };
+		3B53729C20250B560020F3B1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3B6B19091FA4C3D700DC9134 /* UnconfirmedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnconfirmedVC.swift; sourceTree = "<group>"; };
 		3B71C4F91EE6836800746DEE /* Time Transac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Time Transac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B71C4FC1EE6836800746DEE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -223,6 +227,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B53729D20250B560020F3B1 /* SystemConfiguration.framework in Frameworks */,
 				F30136F51F2D045D0023828A /* AVFoundation.framework in Frameworks */,
 				F30136F61F2D045D0023828A /* AVKit.framework in Frameworks */,
 				3B0FC40D1F24804300ED88C6 /* CoreLocation.framework in Frameworks */,
@@ -253,6 +258,7 @@
 		3B0FC4091F247F7A00ED88C6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3B53729C20250B560020F3B1 /* SystemConfiguration.framework */,
 				F30136F31F2D045D0023828A /* AVFoundation.framework */,
 				F30136F41F2D045D0023828A /* AVKit.framework */,
 				3B0FC40C1F24804300ED88C6 /* CoreLocation.framework */,
@@ -262,6 +268,14 @@
 				81FF9CB0337E42194F0583EF /* Pods_Time_TransacUITests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3B53729920250AFF0020F3B1 /* Connectivity */ = {
+			isa = PBXGroup;
+			children = (
+				3B53729A20250B1B0020F3B1 /* Connectivity.swift */,
+			);
+			name = Connectivity;
 			sourceTree = "<group>";
 		};
 		3B71C4F01EE6836800746DEE = {
@@ -289,6 +303,7 @@
 		3B71C4FB1EE6836800746DEE /* Time Transac */ = {
 			isa = PBXGroup;
 			children = (
+				3B53729920250AFF0020F3B1 /* Connectivity */,
 				3BF1B7BF1FBD576D00AD2A95 /* Time Transac.entitlements */,
 				F3E55F771F2FF028003D3338 /* Fonts */,
 				3B71C5B01EEF67E000746DEE /* Model */,
@@ -882,6 +897,7 @@
 				3B5371DB202428D80020F3B1 /* TestVC.swift in Sources */,
 				F305C7081F68C90800D8C296 /* navigationBarViewController.swift in Sources */,
 				F35EE16F1F8D3F38007C08E7 /* PopUpJobViewVC.swift in Sources */,
+				3B53729B20250B1B0020F3B1 /* Connectivity.swift in Sources */,
 				F3DD81F91FC3BD35000826F8 /* AppSnackbarController.swift in Sources */,
 				F3A2006A1FF32824005F7286 /* CustomAPIAdapter.swift in Sources */,
 				F33034521FEF80F3004C9C30 /* PaymentContextFooterView.swift in Sources */,
