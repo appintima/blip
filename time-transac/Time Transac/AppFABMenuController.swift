@@ -15,7 +15,10 @@ class AppFABMenuController: FABMenuController, STPPaymentContextDelegate{
     fileprivate var logoutItem: FABMenuItem!
     fileprivate var unconfirmedItem: FABMenuItem!
     fileprivate var paymentMethodsItem: FABMenuItem!
+    fileprivate var profilePageItem: FABMenuItem!
     var paymentContext: STPPaymentContext? = nil
+    
+    var currUser: IntimaUser?
     
     
     func paymentContext(_ paymentContext: STPPaymentContext, didFailToLoadWithError error: Error) {
@@ -43,9 +46,15 @@ class AppFABMenuController: FABMenuController, STPPaymentContextDelegate{
         
         prepareFABButton()
         prepareLogoutFabMenuItem()
+        prepareProfilePageFabMenuItem()
         prepareUnconfirmedFabMenuItem()
         preparePaymentMethodsItem()
         prepareFABMenu()
+        
+        let service = ServiceCalls()
+        service.getUserInfo(hash: service.emailHash) { (currUser) in
+            self.currUser = currUser!
+        }
     }
 }
 
@@ -64,6 +73,16 @@ extension AppFABMenuController {
         logoutItem.fabButton.pulseColor = .white
         logoutItem.fabButton.backgroundColor = Color.blue.base
         logoutItem.fabButton.addTarget(self, action: #selector(handleLogout(button:)), for: .touchUpInside)
+    }
+    
+    fileprivate func prepareProfilePageFabMenuItem(){
+        profilePageItem = FABMenuItem()
+        profilePageItem.title = "Profile"
+        profilePageItem.fabButton.image = Icon.cm.image
+        profilePageItem.fabButton.tintColor = .white
+        profilePageItem.fabButton.pulseColor = .white
+        profilePageItem.fabButton.backgroundColor = Color.blue.base
+        profilePageItem.fabButton.addTarget(self, action: #selector(handleProfile(button:)), for: .touchUpInside)
     }
     
     fileprivate func prepareUnconfirmedFabMenuItem() {
@@ -89,7 +108,7 @@ extension AppFABMenuController {
     
     fileprivate func prepareFABMenu() {
         fabMenu.fabButton = fabButton
-        fabMenu.fabMenuItems = [logoutItem, unconfirmedItem, paymentMethodsItem]
+        fabMenu.fabMenuItems = [logoutItem, unconfirmedItem, paymentMethodsItem, profilePageItem]
         fabMenuBacking = .none
         fabMenu.fabMenuDirection = .down
         
@@ -101,9 +120,17 @@ extension AppFABMenuController {
 }
 
 extension AppFABMenuController {
+    
+    @objc fileprivate func handleProfile(button: UIButton){
+        fabMenu.fabButton?.animate(.rotate(0))
+        let sb = UIStoryboard.init(name: "Main", bundle: nil)
+        let profilepage = sb.instantiateViewController(withIdentifier: "profilePage") as? ConfirmProfilePageVC
+        profilepage?.currUser = currUser
+        self.present(profilepage!, animated: true, completion: nil)
+    }
+    
     @objc
     fileprivate func handleLogout(button: UIButton) {
-        
         fabMenu.close()
         fabMenu.fabButton?.animate(.rotate(0))
         let firebaseAuth = Auth.auth()
