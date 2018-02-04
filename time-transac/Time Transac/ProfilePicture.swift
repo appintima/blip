@@ -19,10 +19,11 @@ class ProfilePicture: UIViewController, UIImagePickerControllerDelegate, UINavig
     let helper = HelperFunctions()
     var userRef: DatabaseReference!
     var userUploadedPicture = false
-    var appDelegate:AppDelegate!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        profilePicture.image = UIImage(named: "emptyProfilePicture")
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ProfilePicture.imageTapped(gesture:)))
         userRef = Database.database().reference().child("Users").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))
         self.navigationController?.navigationBar.isHidden = true
@@ -41,13 +42,11 @@ class ProfilePicture: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        appDelegate = UIApplication.shared.delegate as! AppDelegate
-        
-        
+   
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        appDelegate = nil
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
