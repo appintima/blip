@@ -35,7 +35,11 @@ class endJobNavigation: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        
+        goToEndJob()
         self.gradientView.startAnimation()
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,7 +48,6 @@ class endJobNavigation: UIViewController {
     
     @IBAction func startJobPressed(_ sender: Any) {
         
-
         let awaitingPosterConfirmation = PopupDialog(title: "Please wait", message: "\(self.job.jobOwnerFullName!) has been notified. The job will begin once the poster confirms")
         self.present(awaitingPosterConfirmation, animated: true) {
             self.service.accepterReady(job: self.job, completion: { (ownerDeviceToken) in
@@ -66,6 +69,21 @@ class endJobNavigation: UIViewController {
                 })
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "accepterReadyNotification"), object: nil)
             })
+        }
+        
+    }
+    
+    func goToEndJob(){
+    
+        service.onJobBegun { (code) in
+            
+            if code == 0{
+                
+                let sb = UIStoryboard.init(name: "Main", bundle: nil)
+                let completeJob = sb.instantiateViewController(withIdentifier: "endJob") as? EndJob
+                completeJob?.job = self.job
+                self.present(completeJob!, animated: true, completion: nil)
+            }
         }
     }
     

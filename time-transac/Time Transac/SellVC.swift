@@ -107,6 +107,20 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
                 dest.job = self.acceptedJob
             }
         }
+        
+        if segue.identifier == "endJobFromSellVC"{
+            
+            if let dest = segue.destination as? EndJob{
+                dest.job = self.acceptedJob
+            }
+        }
+        
+        if segue.identifier == "startJobFromSellVC"{
+            if let dest = segue.destination as? endJobNavigation{
+                dest.job = self.acceptedJob
+            }
+        }
+        
         if segue.identifier == "goToJobOwnerStartJob"{
             if let dest = segue.destination as? JobOwnerStartJob{
                 service.getJobPostedByCurrentUser(completion: { (job) in
@@ -408,7 +422,7 @@ extension SellVC {
             //Attempt to charge a payment
             self.submitJobButton.isHidden = true
             //LoadingAnimation initialize and play
-            MyAPIClient.sharedClient.completeCharge(amount: priceForStripe, completion: { charge_id in
+            MyAPIClient.sharedClient.authorizeCharge(amount: priceForStripe, completion: { charge_id in
                 //If no error when paying
                 loadingAnimation.stop()
                 if let loadingViewAfterStripe = self.view.viewWithTag(100){
