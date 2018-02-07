@@ -64,8 +64,8 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
     var timer : Timer!
     var searchBar: SHSearchBar!
     var latestAccepted:Job!
+    let loadingAnimation = LOTAnimationView(name: "loading")
     var applicantEHash:String!
-    let pulseAnimation = LOTAnimationView(name: "pulse_loader")
     var filteredJobs: [MGLPointAnnotation] = []
     var allAnnotations: [String:CustomMGLAnnotation]!
     var accepterHash: String?
@@ -197,6 +197,7 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
                 
                 let popup = preparePopupForJobPosting(wage: pricePerHour.text!, time: numberOfHoursTF.text!)
                 self.present(popup, animated: true, completion: nil)
+                
             }
             
         }
@@ -412,22 +413,15 @@ extension SellVC {
         
         let continueButton = DefaultButton(title: "Continue", dismissOnTap: true) {
             
-            let loadingView = UIView(frame: CGRect(x: self.view.frame.size.width - 100, y: self.view.frame.size.height - 100, width: 200, height: 200))
-            loadingView.tag = 100
-            let loadingAnimation = LOTAnimationView(name: "loading")
-            loadingView.handledAnimation(Animation: loadingAnimation)
-            self.view.addSubview(loadingView)
-            loadingAnimation.play()
-            loadingAnimation.loopAnimation = true
+            
             //Attempt to charge a payment
+            self.prepareAndAddBlurredLoader()
             self.submitJobButton.isHidden = true
             //LoadingAnimation initialize and play
             MyAPIClient.sharedClient.authorizeCharge(amount: priceForStripe, completion: { charge_id in
                 //If no error when paying
-                loadingAnimation.stop()
-                if let loadingViewAfterStripe = self.view.viewWithTag(100){
-                    loadingViewAfterStripe.removeFromSuperview()
-                }
+                
+                self.removedBlurredLoader()
                 if charge_id != nil{
                     //
                     self.service.addJobToFirebase(jobTitle: self.jobTitleTF.text!, jobDetails: self.jobDetailsTF.text!, pricePerHour: self.pricePerHour.text!, numberOfHours: self.numberOfHoursTF.text!, locationCoord: self.currentLocation, chargeID: charge_id!)
@@ -468,6 +462,35 @@ extension SellVC {
         check.play()
     }
     
+    func removedBlurredLoader(){
+        
+        self.loadingAnimation.stop()
+        if let loadingViewAfterStripe = self.view.viewWithTag(100){
+            loadingViewAfterStripe.removeFromSuperview()
+        }
+        if let blurredViewAfterStripe = self.view.viewWithTag(101){
+            blurredViewAfterStripe.removeFromSuperview()
+        }
+    }
+    
+    func prepareAndAddBlurredLoader(){
+        
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = self.view.bounds
+        blurEffectView.tag = 101
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.view.addSubview(blurEffectView)
+        let loadingView = UIView()
+        loadingView.tag = 100
+        loadingView.frame.size = CGSize(width: 200, height: 200)
+        loadingView.frame.origin = self.view.bounds.origin
+        loadingView.center = self.view.convert(self.view.center, from: loadingView)
+        loadingView.handledAnimation(Animation: self.loadingAnimation)
+        self.view.addSubview(loadingView)
+        self.loadingAnimation.play()
+        self.loadingAnimation.loopAnimation = true
+    }
     
     func prepareAndShowPopup(job: Job) -> PopupDialog{
         
@@ -483,6 +506,7 @@ extension SellVC {
         let buttonOne = CancelButton(title: "Cancel") {
             print("Job Cancelled")
         }
+        
         
         let buttonTwo = DefaultButton(title: "Accept job", dismissOnTap: true) {
             self.service.acceptPressed(job: job, user: Auth.auth().currentUser!) { (deviceToken) in

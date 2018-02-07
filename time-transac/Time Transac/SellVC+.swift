@@ -77,7 +77,7 @@ extension SellVC: Constrainable{
                     self.allAnnotations = annotationDict
                 }
             }
-            else if code == 1{
+            else if code == 6{
                 
                 self.service.getJobAcceptedByCurrentUser(completion: { (job) in
                     self.acceptedJob = job
@@ -85,12 +85,8 @@ extension SellVC: Constrainable{
                 })
                 
             }
-            else if code == 2{
-                if let allAnnos = self.MapView.annotations{
-                    self.MapView.removeAnnotations(allAnnos)
-                }
-            }
-            else if code == 3{
+
+            else if code == 7{
                 
                 self.service.getJobAcceptedByCurrentUser(completion: { (job) in
                     self.acceptedJob = job
@@ -99,7 +95,7 @@ extension SellVC: Constrainable{
                 
             }
                 
-            else if code == 4{
+            else if code == 8{
                 
                 self.service.getJobAcceptedByCurrentUser(completion: { (job) in
                     self.acceptedJob = job
@@ -108,19 +104,24 @@ extension SellVC: Constrainable{
                 
             }
             
-            else if code == 5{
+            else if code == 2{
                 
                 self.setStateOnJobStart()
             }
             
-            else if code == 6{
+            else if code == 3{
                 
                 self.setStateWhenAccepterIsReady()
             }
             
-            else if code == 7{
+            else if code == 4{
                 
                 self.setStateForJobWasAccepted()
+            }
+            
+            else if code == 1{
+                
+                self.setStateOnJobEnd()
             }
         }
         
@@ -128,39 +129,24 @@ extension SellVC: Constrainable{
             
             if let stateCode = code{
                 
-                if stateCode == 0{
-                    
-                    self.setStateWhenAccepterIsReady()
-                }
-                    
-                else if stateCode == 1{
-                    
-                    // Accepter not ready
-                }
-                
-                else if stateCode == 2{
+                if stateCode == 1{
                     
                     self.setStateOnJobStart()
                 }
                 
-                else if stateCode == 3{
-                    
-                    // Job not started
-                }
-                
                 else if stateCode == 4{
                     
-                    self.setStateOnJobEnd()
+                    self.setStateWhenAccepterIsReady()
                 }
                 
                 else if stateCode == 5{
                     
-                    // Job not completed
+                    self.setStateOnJobEnd()
                 }
                 
-                else if stateCode == 6{
+                else if stateCode == 3{
                     
-                    self.performSegue(withIdentifier: "goToStartJob", sender: self)
+                    self.setStateForJobWasAccepted()
                 }
             }
             
@@ -239,6 +225,35 @@ extension SellVC: Constrainable{
                 })
             }
         }
+        
+        else{
+            
+            self.service.GetUserHashWhoAccepted { (hash) in
+                
+                self.service.getUserInfo(hash: hash, completion: { (userObject) in
+                    if let user = userObject{
+                        self.accepterUserObject = user
+                        self.service.getJobPostedByCurrentUser(completion: { (jobPost) in
+                            self.currentJobPost = jobPost
+                            self.prepareBannerForJobAccepted(user: user, job: jobPost)
+                            if let annotations = self.MapView.annotations{
+                                self.MapView.removeAnnotations(annotations)
+                            }
+                            self.accepterHash = hash
+                            self.service.getLiveLocationOnce(hash: hash, completion: { (loc) in
+                                self.jobAccepterAnnotation.photoURL = user.photoURL
+                                self.MapView.addAnnotation(self.jobAccepterAnnotation)
+                                self.jobAccepterAnnotation.coordinate = loc
+                                self.centerCameraOnJobAccepter(location: loc)
+                                Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.updateAccepterLocations), userInfo: nil, repeats: true)
+                                self.setStateWhenAccepterIsReady()
+                            })
+                        })
+                    }
+                })
+            }
+            
+        }
     }
 
     
@@ -267,19 +282,35 @@ extension SellVC: Constrainable{
         banner.autoDismiss = false
         banner.onTap = {
             
+            banner.dismiss()
+            self.prepareAndAddBlurredLoader()
+            
             self.service.getJobPostedByCurrentUser(completion: { (job) in
                 MyAPIClient.sharedClient.completeCharge(job: job, completion: { (id) in
                     
+                    self.removedBlurredLoader()
                     if id != nil{
+                        self.service.confirmedJobEnd()
                         banner.dismiss()
                         UIView.animate(withDuration: 1.5, animations: {
-                            self.searchBar.alpha = 0
-                            self.postJobButton.alpha = 0
+                            
+                            self.searchBar.alpha = 1
+                            self.postJobButton.alpha = 1
                         })
+                        UIView.animate(withDuration: 1, animations: {
+                            
+                            self.MapView.removeAnnotation(self.jobAccepterAnnotation)
+                            self.service.getJobsFromFirebase(MapView: self.MapView) { annotationDict  in
+                                self.allAnnotations = annotationDict
+                            }
+                        })
+                        
+                        
                     }
                     else{
-                        let errorPopup = PopupDialog(title: "Error", message: "Could not process the payment, please try again")
+                        let errorPopup = PopupDialog(title: "Error", message: "Could not process the payment, please try again or add a new payment method")
                         self.present(errorPopup, animated: true, completion: nil)
+                        banner.show()
                     }
                 })
             })

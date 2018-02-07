@@ -19,11 +19,6 @@ class Job{
     var title: String
     var wage_per_hour: Double
     var maxTime: Double
-    var jobOwner: User!
-    var jobApplicant: User!
-    var occupied: Bool!
-    var started:Bool!
-    var completed: Bool!
     var jobID: String!
     var location: CLLocation!
 //    static var jobIDarray = [String]()
@@ -34,8 +29,6 @@ class Job{
     var ref: DatabaseReference!
     var latitude: Double!
     var longitude: Double!
-    var accepterReady: Bool!
-
 
 
     init?(snapshot: DataSnapshot) {
@@ -43,16 +36,12 @@ class Job{
             let jobValues = snapshot.value as? [String:AnyObject],
             let latitude = jobValues["latitude"] as? Double,
             let longitude = jobValues["longitude"] as? Double,
-            let occupied = jobValues["isOccupied"] as? Bool,
-            let completed = jobValues["isCompleted"] as? Bool,
-            let started = jobValues["started"] as? Bool,
-            let title = jobValues["JobTitle"] as? String,
-            let description = jobValues["JobDescription"] as? String,
-            let jobOwnerEmailHash = jobValues["JobOwner"] as? String,
-            let jobOwnerFullName = jobValues["Full Name"] as? String,
-            let wage_per_hour = jobValues["Price"] as? String,
-            let maxTime = jobValues["Time"] as? String,
-            let accepterReady = jobValues["accepterReady"] as? Bool
+            let title = jobValues["jobTitle"] as? String,
+            let description = jobValues["jobDescription"] as? String,
+            let jobOwnerEmailHash = jobValues["jobOwner"] as? String,
+            let jobOwnerFullName = jobValues["fullName"] as? String,
+            let wage_per_hour = jobValues["price"] as? String,
+            let maxTime = jobValues["time"] as? String
         else{return nil}
             
         
@@ -62,11 +51,6 @@ class Job{
         self.jobID = snapshot.key
         self.latitude = latitude
         self.longitude = longitude
-        
-        self.occupied = occupied
-        self.completed = completed
-        self.started = started
-        self.accepterReady = accepterReady
         self.title = title
         self.description = description
         self.jobOwnerEmailHash = jobOwnerEmailHash
@@ -77,24 +61,6 @@ class Job{
 
     }
     
-
-    func setOccupied(){
-        self.occupied = true
-        ref.updateChildValues(["isOccupied" : true])
-    }
-    
-    func setNotOccupied(){
-        self.occupied = false
-        ref.updateChildValues(["isOccupied" : false])
-    }
-    
-    func setCompleted(){
-        ref.updateChildValues(["isCompleted" : true])
-    }
-    
-    func setNotCompleted(){
-        ref.updateChildValues(["isCompleted" : false])
-    }
     
 
 }

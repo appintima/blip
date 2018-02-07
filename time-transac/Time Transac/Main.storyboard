@@ -1852,22 +1852,6 @@
             </objects>
             <point key="canvasLocation" x="-1474.4000000000001" y="-980.05997001499259"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="bHj-TS-fsO">
-            <objects>
-                <navigationController id="Bqc-ux-nFj" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2ag-Dx-ilu">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="gIW-QR-Jyc" kind="relationship" relationship="rootViewController" id="BQ2-oD-yJW"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qra-fk-V6C" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-703" y="-1738"/>
-        </scene>
         <!--startJob-->
         <scene sceneID="QG2-mm-IGL">
             <objects>
@@ -2059,7 +2043,4 @@
         <image name="emptyProfilePicture" width="64" height="64"/>
         <image name="facebookButton" width="512" height="512"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="CpH-hp-e2g"/>
-    </inferredMetricsTieBreakers>
 </document>

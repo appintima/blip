@@ -75,16 +75,17 @@ class endJobNavigation: UIViewController {
     
     func goToEndJob(){
     
-        service.onJobBegun { (code) in
+        service.setAppState(completion: { (code, job) in
             
-            if code == 0{
+            
+            if code == 2{
                 
                 let sb = UIStoryboard.init(name: "Main", bundle: nil)
                 let completeJob = sb.instantiateViewController(withIdentifier: "endJob") as? EndJob
                 completeJob?.job = self.job
                 self.present(completeJob!, animated: true, completion: nil)
             }
-        }
+        })
     }
     
     
