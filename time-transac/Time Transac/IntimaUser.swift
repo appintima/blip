@@ -18,6 +18,7 @@ class IntimaUser {
     var customerID: String?
     var photoURL: URL?
     var uid: String?
+    var completedJobs: [String:AnyObject]?
     
     var ref:DatabaseReference!
     
@@ -42,6 +43,10 @@ class IntimaUser {
         self.customerID = customerID
         self.photoURL = URL(string: photoURL)
         self.uid = uid
+        
+        if let userval = snapshot.value as? [String:AnyObject]{
+            self.completedJobs = userval["CompletedJobs"] as? [String:AnyObject]
+        }
     }
 }
 

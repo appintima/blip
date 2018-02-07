@@ -9,16 +9,19 @@
 
 import UIKit
 import Firebase
+import FirebaseStorage
 import Lottie
 import Pastel
 import Kingfisher
 import Alamofire
 
-class ConfirmProfilePageVC: UIViewController {
+class ConfirmProfilePageVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
 //    var applicantInfo: [String:AnyObject]!
     var currUser: IntimaUser?
     var jobAccepter: IntimaUser?
+    var userChangedProfilePic = false
+    var userRef:DatabaseReference!
     @IBOutlet weak var gradientView: PastelView!
     @IBOutlet weak var scrollForReviews: UIScrollView!
     @IBOutlet weak var ratingAnimationView: UIView!
@@ -38,8 +41,11 @@ class ConfirmProfilePageVC: UIViewController {
         prepareInformation()
         self.gradientView.animationDuration = 3.0
         gradientView.setColors([#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1),#colorLiteral(red: 0.7605337501, green: 0.7767006755, blue: 0.7612826824, alpha: 1)])
+        profilePic.isUserInteractionEnabled = true
         profilePic.cornerRadius = profilePic.frame.height/2
-
+        if let completedJobs = currUser?.completedJobs{
+            totalJobs.text = "\(completedJobs.count)"
+        }
         if let jobAccepter = self.jobAccepter{
             picURL = jobAccepter.photoURL
             profilePic.kf.setImage(with: picURL!)
@@ -48,12 +54,25 @@ class ConfirmProfilePageVC: UIViewController {
             picURL = currUser!.photoURL
             profilePic.kf.setImage(with: picURL!)
         }
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
         self.gradientView.startAnimation()
+        
+        
+        if let providerData = Auth.auth().currentUser?.providerData{
+            for userInfo in providerData {
+                if userInfo.providerID == "facebook.com" {
+                    print("FACEBOOK")
+                }
+                else{// user can change profile picture
+                    print("Bullsiza")
+                    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
+                    profilePic.addGestureRecognizer(tapGesture)
+                }
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,6 +83,26 @@ class ConfirmProfilePageVC: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+   @objc func imageTapped(gesture: UIGestureRecognizer){
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        
+        let actionPopup = UIAlertController(title: "Photo Source", message: "Choose Image", preferredStyle: .actionSheet)
+        
+        actionPopup.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action) in
+            imagePickerController.sourceType = .camera
+            self.present(imagePickerController, animated: true, completion: nil)
+        }))
+        
+        actionPopup.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (action) in
+            imagePickerController.sourceType = .photoLibrary
+            self.present(imagePickerController, animated: true, completion: nil)
+        }))
+        
+        actionPopup.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(actionPopup, animated: true, completion: nil)
     }
     
     func prepareInformation() {
@@ -96,7 +135,46 @@ class ConfirmProfilePageVC: UIViewController {
     }
     
     @IBAction func dismissButton(_ sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
+        let helper = HelperFunctions()
+        self.userRef = Database.database().reference().child("Users").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))
+        if (userChangedProfilePic){
+            
+            let storageRef = Storage.storage().reference(forURL: "gs://intima-227c4.appspot.com").child("profile_image").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))
+            let imageData = UIImageJPEGRepresentation((profilePic.image)!, 0.1)
+            
+            storageRef.putData(imageData!, metadata: nil, completion: { (metadata, error) in
+                if error != nil{
+                    print(error!.localizedDescription)
+                    return
+                }
+                let profileImgURL = metadata?.downloadURL()?.absoluteString
+                let profile = Auth.auth().currentUser?.createProfileChangeRequest()
+                profile?.photoURL = URL(string: profileImgURL!)
+                profile?.commitChanges(completion: { (err) in
+                    if err != nil{
+                        return
+                    }
+                    let imgValues:[String:String] = ["photoURL":profileImgURL!]
+                    self.userRef.updateChildValues(imgValues)
+                    self.dismiss(animated: true, completion: nil)
+                })
+                
+            })
+            
+        }else{
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
+    //Delegate Methods
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        profilePic.image = image
+        userChangedProfilePic = true
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
 }

@@ -19,6 +19,7 @@ class AppFABMenuController: FABMenuController, STPPaymentContextDelegate{
     var paymentContext: STPPaymentContext? = nil
     
     var currUser: IntimaUser?
+    let service = ServiceCalls()
     
     
     func paymentContext(_ paymentContext: STPPaymentContext, didFailToLoadWithError error: Error) {
@@ -47,14 +48,10 @@ class AppFABMenuController: FABMenuController, STPPaymentContextDelegate{
         prepareFABButton()
         prepareLogoutFabMenuItem()
         prepareProfilePageFabMenuItem()
-        prepareUnconfirmedFabMenuItem()
         preparePaymentMethodsItem()
         prepareFABMenu()
+        print("WOOOOOO")
         
-        let service = ServiceCalls()
-        service.getUserInfo(hash: service.emailHash) { (currUser) in
-            self.currUser = currUser!
-        }
     }
 }
 
@@ -85,16 +82,6 @@ extension AppFABMenuController {
         profilePageItem.fabButton.addTarget(self, action: #selector(handleProfile(button:)), for: .touchUpInside)
     }
     
-    fileprivate func prepareUnconfirmedFabMenuItem() {
-        unconfirmedItem = FABMenuItem()
-        unconfirmedItem.title = "Profile"
-        unconfirmedItem.fabButton.image = Icon.cm.star
-        unconfirmedItem.fabButton.tintColor = .white
-        unconfirmedItem.fabButton.pulseColor = .white
-        unconfirmedItem.fabButton.backgroundColor = Color.blue.base
-        unconfirmedItem.fabButton.addTarget(self, action: #selector(handleProfile(button:)), for: .touchUpInside)
-    }
-    
     fileprivate func preparePaymentMethodsItem() {
         paymentMethodsItem = FABMenuItem()
         paymentMethodsItem.title = "Payment Methods"
@@ -108,7 +95,7 @@ extension AppFABMenuController {
     
     fileprivate func prepareFABMenu() {
         fabMenu.fabButton = fabButton
-        fabMenu.fabMenuItems = [logoutItem, unconfirmedItem, paymentMethodsItem, profilePageItem]
+        fabMenu.fabMenuItems = [logoutItem, paymentMethodsItem, profilePageItem]
         fabMenuBacking = .none
         fabMenu.fabMenuDirection = .down
         
@@ -123,6 +110,7 @@ extension AppFABMenuController {
     
     @objc fileprivate func handleProfile(button: UIButton){
         fabMenu.fabButton?.animate(.rotate(0))
+        fabMenu.close()
         let sb = UIStoryboard.init(name: "Main", bundle: nil)
         let profilepage = sb.instantiateViewController(withIdentifier: "profilePage") as? ConfirmProfilePageVC
         profilepage?.currUser = currUser
@@ -163,8 +151,11 @@ extension AppFABMenuController {
     @objc
     open func fabMenuWillOpen(fabMenu: FABMenu) {
         fabMenu.fabButton?.animate(.rotate(0))
+        service.getUserInfo(hash: service.emailHash) { (currUser) in
+            self.currUser = currUser!
+            print("fabMenuWillOpen")
+        }
         
-        print("fabMenuWillOpen")
     }
     
     @objc

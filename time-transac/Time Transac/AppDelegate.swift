@@ -13,6 +13,7 @@ import UserNotifications
 import FBSDKCoreKit
 import Stripe
 import RevealingSplashView
+import PopupDialog
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate{
@@ -227,6 +228,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             print("Connection Gone")
         }
     }
+    
     
 }
 

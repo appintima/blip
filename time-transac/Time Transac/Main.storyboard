@@ -653,7 +653,7 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hv3-PD-NUQ" userLabel="TotalJobs">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hv3-PD-NUQ" userLabel="TotalJobs">
                                                 <rect key="frame" x="29" y="168" width="50" height="20"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="43Z-yc-QNE"/>
@@ -666,7 +666,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qgl-kT-qLb">
                                                 <rect key="frame" x="8" y="28" width="57" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" title="Cancel"/>
+                                                <state key="normal" title="Back"/>
                                                 <connections>
                                                     <action selector="dismissButton:" destination="P95-eq-Mey" eventType="touchUpInside" id="dSi-RQ-AQv"/>
                                                 </connections>
@@ -1207,7 +1207,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="goPressed:" destination="MXG-7B-eGW" eventType="primaryActionTriggered" id="kNF-Zy-8yI"/>
+                                    <action selector="loginWithReturn:" destination="MXG-7B-eGW" eventType="primaryActionTriggered" id="7Gj-d8-kas"/>
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WET-f5-ghP" customClass="RaisedButton" customModule="Material">

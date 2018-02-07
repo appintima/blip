@@ -11,11 +11,14 @@ import Lottie
 import Firebase
 import Pastel
 import Material
+import PopupDialog
 
 
 class LoginVC: UIViewController {
 
+ 
     var connectivity = Connectivity()
+    var internet:Bool!
     @IBOutlet weak var gradientViewLogin: PastelView!
     @IBOutlet weak var emailTF: TextField!
     @IBOutlet weak var passwordTF: TextField!
@@ -28,9 +31,7 @@ class LoginVC: UIViewController {
     let animationViewTwo = LOTAnimationView(name: "simple_outline_lock_")
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-        super.viewDidAppear(true)
         prepareTitleTextField()
         self.navigationController?.navigationBar.isHidden = false
         gradientViewLogin.animationDuration = 3.0
@@ -53,6 +54,7 @@ class LoginVC: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
         self.navigationController?.navigationBar.isHidden = false
         gradientViewLogin.startAnimation()
         
@@ -73,26 +75,37 @@ class LoginVC: UIViewController {
         }
     }
     
-    
+    @objc func connectivityChanged(notification: Notification){
+        let connectivity = notification.object as! Connectivity
+        if (connectivity.connection == .wifi || connectivity.connection == .cellular){
+            self.internet = true
+            print("REGAINED CONNECTION")
+        }else{
+            self.internet = false
+            print("Connection Gone")
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
-    
-    @IBAction func loginButton(_ sender: UIButton) {
-        
+    @IBAction func loginWithReturn(_ sender: Any){ // primary target action for passwordTF
         // check if fields are not empty
         print("HEY")
-        
         self.loginButtonView.makeButtonDissapear()
         self.forgetPassword.makeButtonDissapear()
         self.subview.isHidden = false
         
-        if (connectivity?.connection != .wifi){
-            print("HEYYA")
+        if !(internet){
+            print("WTF")
+            let popup = popupForNoInternet()
+            self.present(popup, animated: true, completion: nil)
+            self.loginButtonView.makeButtonAppear()
+            self.forgetPassword.makeButtonAppear()
+            self.subview.isHidden = true
+            return
         }
         
         if (emailTF.text?.isEmpty == true || passwordTF.text?.isEmpty == true){
@@ -105,60 +118,67 @@ class LoginVC: UIViewController {
                 return
             }
         }
-        
-        // check if email is in database and password are correct
-
+            // check if email is in database and password are correct
         else{
-            
-            let loadingAnim = self.view.returnHandledAnimation(filename: "loading", subView: subview, tagNum: 3)
-            loadingAnim.play()
-            loadingAnim.loopAnimation = true
             Auth.auth().signIn(withEmail: emailTF.text!, password: passwordTF.text!, completion: { (user, error) in
                 // do some error checking
                 if (error != nil || !(user?.isEmailVerified)!){
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
-                        loadingAnim.stop()
-                        self.subview.makeAnimationDissapear(tag: 3)
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2){
-                        self.view.returnHandledAnimation(filename: "error", subView: self.subview, tagNum: 2).play()
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.5){
-                        self.loginButtonView.makeButtonAppear()
-                        self.forgetPassword.makeButtonAppear()
-                        self.subview.makeAnimationDissapear(tag: 2)
-                    }
+                    self.errorAnimation()
                     return
                 }
-                    
                 else if (error == nil && (user?.isEmailVerified)!){
-                    
                     // else perform segue
-                    
                     let ref = Database.database().reference().child("Users").child(self.MD5(string: (user?.email)!))
                     let token = ["currentDevice": AppDelegate.DEVICEID]
                     ref.updateChildValues(token)
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
-                        loadingAnim.stop()
-                        self.subview.makeAnimationDissapear(tag: 3)
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2){
-                        self.view.returnHandledAnimation(filename: "check", subView: self.subview, tagNum: 1).play()
-
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.5, execute: {
-                        self.subview.makeAnimationDissapear(tag: 1)
-                        self.subview.makeAnimationDissapear(tag: 2)
-                        
-                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                        appDelegate.isLaunched = false
-                        print(appDelegate.isLaunched)
-                        appDelegate.setLoginAsRoot()
-                        
-                        
-                    })
+                    self.loginCredentialsCorrectAnimation()
+                }
+            })
+        }
+    }
+    
+    @IBAction func loginButton(_ sender: UIButton) {
+        
+        // check if fields are not empty
+        print("HEY")
+        self.loginButtonView.makeButtonDissapear()
+        self.forgetPassword.makeButtonDissapear()
+        self.subview.isHidden = false
+        
+        if !(internet){
+            print("WTF")
+            let popup = popupForNoInternet()
+            self.present(popup, animated: true, completion: nil)
+            self.loginButtonView.makeButtonAppear()
+            self.forgetPassword.makeButtonAppear()
+            self.subview.isHidden = true
+            return
+        }
+        
+        if (emailTF.text?.isEmpty == true || passwordTF.text?.isEmpty == true){
+            self.view.returnHandledAnimation(filename: "error", subView: subview, tagNum: 1).play()
+            let when = DispatchTime.now() + 2
+            DispatchQueue.main.asyncAfter(deadline: when) {
+                self.loginButtonView.makeButtonAppear()
+                self.forgetPassword.makeButtonAppear()
+                self.subview.makeAnimationDissapear(tag: 1)
+                return
+            }
+        }
+        // check if email is in database and password are correct
+        else{
+            Auth.auth().signIn(withEmail: emailTF.text!, password: passwordTF.text!, completion: { (user, error) in
+                // do some error checking
+                if (error != nil || !(user?.isEmailVerified)!){
+                    self.errorAnimation()
+                    return
+                }
+                else if (error == nil && (user?.isEmailVerified)!){
+                    // else perform segue
+                    let ref = Database.database().reference().child("Users").child(self.MD5(string: (user?.email)!))
+                    let token = ["currentDevice": AppDelegate.DEVICEID]
+                    ref.updateChildValues(token)
+                    self.loginCredentialsCorrectAnimation()
                 }
             })
         }
@@ -196,15 +216,6 @@ class LoginVC: UIViewController {
         
     }
     
-    @objc func connectivityChanged(notification: Notification){
-        let connectivity = notification.object as! Connectivity
-        if (connectivity.connection == .wifi || connectivity.connection == .cellular){
-            print("REGAINED CONNECTION")
-        }else{
-            print("Connection Gone")
-        }
-    }
-    
     func ERR_User_Info_Wrong(){
         
         //Load and play error animation
@@ -229,7 +240,66 @@ class LoginVC: UIViewController {
     }
     //TO-DO forgot password
     @objc func goToForgotPasswordPage(){
-        self.performSegue(withIdentifier: "forgotPasswordPage", sender: nil)
+        if !(internet){
+            let popup = popupForNoInternet()
+            self.present(popup, animated: true, completion: nil)
+            return
+        }else{
+            self.performSegue(withIdentifier: "forgotPasswordPage", sender: nil)
+        }
     }
 
+    private func errorAnimation(){
+        let loadingAnim = self.view.returnHandledAnimation(filename: "loading", subView: subview, tagNum: 3)
+        loadingAnim.play()
+        loadingAnim.loopAnimation = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
+            loadingAnim.stop()
+            self.subview.makeAnimationDissapear(tag: 3)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+            self.view.returnHandledAnimation(filename: "error", subView: self.subview, tagNum: 2).play()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.5){
+            self.loginButtonView.makeButtonAppear()
+            self.forgetPassword.makeButtonAppear()
+            self.subview.makeAnimationDissapear(tag: 2)
+        }
+    }
+    
+    private func loginCredentialsCorrectAnimation(){
+        let loadingAnim = self.view.returnHandledAnimation(filename: "loading", subView: subview, tagNum: 3)
+        loadingAnim.play()
+        loadingAnim.loopAnimation = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
+            loadingAnim.stop()
+            self.subview.makeAnimationDissapear(tag: 3)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+            self.view.returnHandledAnimation(filename: "check", subView: self.subview, tagNum: 1).play()
+            
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.5, execute: {
+            self.subview.makeAnimationDissapear(tag: 1)
+            self.subview.makeAnimationDissapear(tag: 2)
+            
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.isLaunched = false
+            print(appDelegate.isLaunched)
+            appDelegate.setLoginAsRoot()
+        })
+    }
+    
+    
+   private func popupForNoInternet()-> PopupDialog {
+        let title = "Internet Unavailable"
+        let message = "Please connect to the internet and try again"
+        let okButton = CancelButton(title: "OK") {
+            return
+        }
+        let popup = PopupDialog(title: title, message: message)
+        popup.addButton(okButton)
+        return popup
+    }
+    
 }

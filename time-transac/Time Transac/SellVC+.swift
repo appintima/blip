@@ -74,6 +74,8 @@ extension SellVC: Constrainable{
     //Prepares the map by adding annotations for jobs from firebase, and setting the mapview.
     @objc func prepareMap(){
         
+        
+        
         service.checkUserStatus { (code) in
             if code == 0{
                 // Nothing happening
@@ -121,13 +123,14 @@ extension SellVC: Constrainable{
                         
                         let errorPopup = PopupDialog(title: "Error", message: "Could not get job accepter's information from the database")
                         self.present(errorPopup, animated: true, completion: nil)
+                        return
                     }
                 })
             }
         }
         
         service.removeAcceptedJobsFromMap { (job) in
-            
+
             if let task = job{
                 if let anno = self.allAnnotations[task.jobID]{
                     self.MapView.removeAnnotation(anno)
@@ -274,7 +277,7 @@ extension SellVC: Constrainable{
 
 
 
-// MARK: - Helper Functions
+// MARK: - Helper Functions (GLOBAL)
 func defaultSearchBar(withRasterSize rasterSize: CGFloat, leftView: UIView?, rightView: UIView?, delegate: SHSearchBarDelegate, useCancelButton: Bool = false) -> SHSearchBar {
     var config = defaultSearchBarConfig(rasterSize)
     config.leftView = leftView

@@ -29,29 +29,56 @@ class EmailVerifyVC: UIViewController {
     var loadingAnimation = LOTAnimationView()
     var user: User?
     var emailPopup: PopupDialog?
+    var connectivity = Connectivity()
+    var internet:Bool!
     
     override func viewDidLoad() {
-        checkEmail = self.view.returnHandledAnimation(filename: "check", subView: emailCheckAnimation, tagNum: 1)
-        
         super.viewDidLoad()
-        super.viewDidAppear(true)
+        checkEmail = self.view.returnHandledAnimation(filename: "check", subView: emailCheckAnimation, tagNum: 1)
         dbRef = Database.database().reference()
         self.prepareTitleTextField()
         self.navigationController?.navigationBar.isHidden = false
         gradientView.animationDuration = 3.0
         gradientView.setColors([#colorLiteral(red: 0.3476088047, green: 0.1101973727, blue: 0.08525472134, alpha: 1),#colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1)])
         self.hideKeyboardWhenTappedAround()
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.continueButtonEmail.makeButtonAppear()
         
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        //Doing internet stuff
+        connectivity?.whenReachable = {_ in
+            
+        }
+        connectivity?.whenUnreachable = {_ in
+            DispatchQueue.main.async {
+                print("NO INTERNET WHEN I STARTED")
+            }
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(connectivityChanged), name: Notification.Name.reachabilityChanged, object: connectivity)
+        do{
+            try connectivity?.startNotifier()
+        }catch{
+            print("Could not start the notifier")
+        }
+    }
+    
+    @objc func connectivityChanged(notification: Notification){
+        let connectivity = notification.object as! Connectivity
+        if (connectivity.connection == .wifi || connectivity.connection == .cellular){
+            self.internet = true
+            print("REGAINED CONNECTION")
+        }else{
+            self.internet = false
+            print("Connection Gone")
+        }
+    }
+    
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -60,6 +87,13 @@ class EmailVerifyVC: UIViewController {
     
     @IBAction func continueEnter(_ sender: Any) {// For when return is pressed on keyboard
         self.dismissKeyboard()
+        
+        if !(internet){
+            let popup = popupForNoInternet()
+            self.present(popup, animated: true, completion: nil)
+            return
+        }
+        
         if (emailTF.text?.isEmpty != true && passwordTF.text?.isEmpty != true){
             self.emailTF.isUserInteractionEnabled = false
             self.passwordTF.isUserInteractionEnabled = false
@@ -90,6 +124,11 @@ class EmailVerifyVC: UIViewController {
     }
     
     @IBAction func continueButtonEmail(_ sender: UIButton) {
+        if !(internet){
+            let popup = popupForNoInternet()
+            self.present(popup, animated: true, completion: nil)
+            return
+        }
         if (emailTF?.text?.isEmpty != true && passwordTF?.text?.isEmpty != true){
             self.emailTF.isUserInteractionEnabled = false
             self.passwordTF.isUserInteractionEnabled = false
@@ -120,6 +159,11 @@ class EmailVerifyVC: UIViewController {
     }
 
     @IBAction func continueTwo(_ sender: UIButton) {
+        if !(internet){
+            let popup = popupForNoInternet()
+            self.present(popup, animated: true, completion: nil)
+            return
+        }
         if let user = Auth.auth().currentUser{
             user.reload(completion: { (error) in
                 if let err = error{
@@ -137,7 +181,7 @@ class EmailVerifyVC: UIViewController {
                             print(error2!.localizedDescription)
                             return
                         }else{
-                            self.addToDBAndSegue()
+                            self.addToDBAnimationAndSegue()
                         }
                     })
                 }else{
@@ -198,7 +242,7 @@ class EmailVerifyVC: UIViewController {
                             return
                         }
                         else{
-                            self.addToDBAndSegue()
+                            self.addToDBAnimationAndSegue()
                         }
                     })
                 }
@@ -264,7 +308,7 @@ class EmailVerifyVC: UIViewController {
         self.loadingAnimation.loopAnimation = true
     }
 
-    private func addToDBAndSegue(){
+    private func addToDBAnimationAndSegue(){
         self.addNewUserToDBJson()
         self.emailCheckAnimation.handledAnimation(Animation: self.checkEmail)
         self.continueButtonEmail.makeButtonDissapear()
@@ -275,6 +319,17 @@ class EmailVerifyVC: UIViewController {
             self.performSegue(withIdentifier: "chooseProfilePicture", sender: self)
             
         }
+    }
+    
+    private func popupForNoInternet()-> PopupDialog {
+        let title = "Internet Unavailable"
+        let message = "Please connect to the internet and try again"
+        let okButton = CancelButton(title: "OK") {
+            return
+        }
+        let popup = PopupDialog(title: title, message: message)
+        popup.addButton(okButton)
+        return popup
     }
 
 }

@@ -75,11 +75,12 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
     let jobAccepterAnnotation = CustomMGLAnnotation()
     var currentJobPost: Job?
     var accepterUserObject: IntimaUser?
+    var connectivity = Connectivity()
+    var internet:Bool!
     
     ////////////////////////Functions associated with the controller go here//////////////////////////
     
     override func viewDidLoad() {
-       
         self.MapView.delegate = self
         MapView.compassView.isHidden = true
         self.navigationController?.navigationBar.isHidden = true
@@ -91,15 +92,24 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
         prepareJobForm()
         self.prepareSearchBar()
         self.prepareBannerLeftView()
-
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        self.prepareMap()
+    }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.isHidden = false
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToStartJob"{
@@ -116,7 +126,6 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
         }
     }
 
-    
     //Sets the camera for the mapview and sets current location to users current locations
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locValue:CLLocationCoordinate2D = manager.location!.coordinate
@@ -130,19 +139,6 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
         service.updateJobAccepterLocation(location: locValue)
         manager.stopUpdatingLocation()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = true
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        self.prepareMap()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-    }
-    
 
     //When the postJob red button is pressed
     @IBAction func postJobPressed(_ sender: Any) {

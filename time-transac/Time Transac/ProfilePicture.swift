@@ -19,7 +19,8 @@ class ProfilePicture: UIViewController, UIImagePickerControllerDelegate, UINavig
     let helper = HelperFunctions()
     var userRef: DatabaseReference!
     var userUploadedPicture = false
-
+    var connectivity = Connectivity()
+    var internet:Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +43,22 @@ class ProfilePicture: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     override func viewDidAppear(_ animated: Bool) {
-   
+        super.viewDidAppear(true)
+        //Doing internet stuff
+        connectivity?.whenReachable = {_ in
+            
+        }
+        connectivity?.whenUnreachable = {_ in
+            DispatchQueue.main.async {
+                print("NO INTERNET WHEN I STARTED")
+            }
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(connectivityChanged), name: Notification.Name.reachabilityChanged, object: connectivity)
+        do{
+            try connectivity?.startNotifier()
+        }catch{
+            print("Could not start the notifier")
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -51,6 +67,17 @@ class ProfilePicture: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewWillDisappear(_ animated: Bool) {
         print("Second")
+    }
+    
+    @objc func connectivityChanged(notification: Notification){
+        let connectivity = notification.object as! Connectivity
+        if (connectivity.connection == .wifi || connectivity.connection == .cellular){
+            self.internet = true
+            print("REGAINED CONNECTION")
+        }else{
+            self.internet = false
+            print("Connection Gone")
+        }
     }
     
     @objc func imageTapped(gesture: UIGestureRecognizer) {
@@ -82,6 +109,11 @@ class ProfilePicture: UIViewController, UIImagePickerControllerDelegate, UINavig
     
 
     @IBAction func continuePressed(_ sender: UIButton) {
+        if !(internet){
+            let popup = popupForNoInternet()
+            self.present(popup, animated: true, completion: nil)
+            return
+        }
         
         let storageRef = Storage.storage().reference(forURL: "gs://intima-227c4.appspot.com").child("profile_image").child(helper.MD5(string: (Auth.auth().currentUser?.email)!))
         
@@ -123,6 +155,18 @@ class ProfilePicture: UIViewController, UIImagePickerControllerDelegate, UINavig
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
         userUploadedPicture = false
+    }
+    
+    
+    private func popupForNoInternet()-> PopupDialog {
+        let title = "Internet Unavailable"
+        let message = "Please connect to the internet and try again"
+        let okButton = CancelButton(title: "OK") {
+            return
+        }
+        let popup = PopupDialog(title: title, message: message)
+        popup.addButton(okButton)
+        return popup
     }
 
 }
