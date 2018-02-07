@@ -17,6 +17,7 @@ import Alamofire
 class ConfirmProfilePageVC: UIViewController {
     
 //    var applicantInfo: [String:AnyObject]!
+    var currUser: IntimaUser?
     var jobAccepter: IntimaUser?
     @IBOutlet weak var gradientView: PastelView!
     @IBOutlet weak var scrollForReviews: UIScrollView!
@@ -25,6 +26,8 @@ class ConfirmProfilePageVC: UIViewController {
     @IBOutlet weak var totalJobs: UILabel!
     @IBOutlet weak var profilePic: UIImageView!
     @IBOutlet weak var fullNameLabel: UILabel!
+    
+    @IBOutlet weak var hireButton: UIButton!
     let ratingAnimation = LOTAnimationView(name: "5_stars")
     var picURL: URL?
 //    var job: Job!
@@ -36,12 +39,16 @@ class ConfirmProfilePageVC: UIViewController {
         self.gradientView.animationDuration = 3.0
         gradientView.setColors([#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1),#colorLiteral(red: 0.7605337501, green: 0.7767006755, blue: 0.7612826824, alpha: 1)])
         profilePic.cornerRadius = profilePic.frame.height/2
-//        picURL = URL(string: (applicantInfo["photoURL"] as! String))
-        picURL = jobAccepter?.photoURL
-        //// PARTIALLY DONE/////
-        profilePic.kf.setImage(with: picURL!)
-        
 
+        if let jobAccepter = self.jobAccepter{
+            picURL = jobAccepter.photoURL
+            profilePic.kf.setImage(with: picURL!)
+        }else{
+            hireButton.isHidden = true
+            picURL = currUser!.photoURL
+            profilePic.kf.setImage(with: picURL!)
+        }
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -60,9 +67,16 @@ class ConfirmProfilePageVC: UIViewController {
     }
     
     func prepareInformation() {
-        self.fullNameLabel.text = jobAccepter?.name
-        self.ratingAnimationView.handledAnimation(Animation: ratingAnimation)
-        ratingAnimation.play(toProgress: (jobAccepter?.rating)!, withCompletion: nil)
+        if let jobAccepter = self.jobAccepter{
+            self.fullNameLabel.text = jobAccepter.name
+            self.ratingAnimationView.handledAnimation(Animation: ratingAnimation)
+            ratingAnimation.play(toProgress: (jobAccepter.rating)!, withCompletion: nil)
+        }else{
+            self.fullNameLabel.text = currUser!.name
+            self.ratingAnimationView.handledAnimation(Animation: ratingAnimation)
+            ratingAnimation.play(toProgress: (currUser?.rating)!, withCompletion: nil)
+        }
+        
     }
     
     @IBAction func confirmclicked(_ sender: UIButton) {
@@ -81,5 +95,8 @@ class ConfirmProfilePageVC: UIViewController {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "confirmedNotification"), object: nil)
     }
     
+    @IBAction func dismissButton(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
+    }
     
 }

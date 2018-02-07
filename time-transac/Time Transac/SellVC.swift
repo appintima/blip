@@ -355,6 +355,7 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
         
         if let anno = annotation as? CustomMGLAnnotation{
             if let profilePic = anno.job?.jobOwnerPhotoURL{
+                picture.contentMode = .scaleAspectFill
                 picture.kf.setImage(with: profilePic)
             }
             else{

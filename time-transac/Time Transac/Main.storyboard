@@ -588,7 +588,7 @@
         <!--Confirm Profile PageVC-->
         <scene sceneID="Qjd-V9-b2R">
             <objects>
-                <viewController id="P95-eq-Mey" customClass="ConfirmProfilePageVC" customModule="Time_Transac" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="profilePage" id="P95-eq-Mey" customClass="ConfirmProfilePageVC" customModule="Time_Transac" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bID-J7-k6x"/>
                         <viewControllerLayoutGuide type="bottom" id="Mvy-Gw-0zp"/>
@@ -663,6 +663,14 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qgl-kT-qLb">
+                                                <rect key="frame" x="8" y="28" width="57" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" title="Cancel"/>
+                                                <connections>
+                                                    <action selector="dismissButton:" destination="P95-eq-Mey" eventType="touchUpInside" id="dSi-RQ-AQv"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.87196621190000001" green="0.44680542820000002" blue="0.38951410959999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
@@ -764,9 +772,12 @@
                             <constraint firstItem="QWA-r5-68b" firstAttribute="centerX" secondItem="Y5i-kb-zpT" secondAttribute="centerX" id="rp1-fs-nhm"/>
                         </constraints>
                     </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="fullNameLabel" destination="cyP-45-Gvz" id="PgQ-Hg-kEK"/>
                         <outlet property="gradientView" destination="QWA-r5-68b" id="xoy-mh-Xqg"/>
+                        <outlet property="hireButton" destination="JI7-sr-jek" id="LjW-TE-4CG"/>
                         <outlet property="profilePic" destination="CjT-vA-9Mm" id="GPA-al-XC0"/>
                         <outlet property="ratingAnimationView" destination="rR9-WB-fdx" id="Ffy-Kq-NMb"/>
                         <outlet property="scrollForReviews" destination="D9f-6s-taa" id="XTT-IP-DHD"/>
@@ -850,14 +861,6 @@
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="postJobPressed:" destination="edh-TT-NGu" eventType="touchUpInside" id="ZrW-Z5-N5u"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sVh-A1-1fk" userLabel="unconfrm">
-                                                <rect key="frame" x="139" y="94" width="46" height="30"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" title="Button"/>
-                                                <connections>
-                                                    <action selector="buttonPressedForProfile:" destination="edh-TT-NGu" eventType="touchUpInside" id="1Ma-S8-WSC"/>
                                                 </connections>
                                             </button>
                                         </subviews>
