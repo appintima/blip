@@ -43,7 +43,6 @@
 		5FB8A52B2023AA3000B5FE07 /* WaypointConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB8A52A2023AA3000B5FE07 /* WaypointConfirmationViewController.swift */; };
 		5FD00AAF20092649004CFD9E /* onboarding.json in Resources */ = {isa = PBXBuildFile; fileRef = 5FD00AAE20092649004CFD9E /* onboarding.json */; };
 		A4CEFDD9D0F6BA8F7BCA84C5 /* Pods_Time_TransacUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81FF9CB0337E42194F0583EF /* Pods_Time_TransacUITests.framework */; };
-		F30136F21F2CF3590023828A /* RootPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30136F11F2CF3590023828A /* RootPageViewController.swift */; };
 		F30136F51F2D045D0023828A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F30136F31F2D045D0023828A /* AVFoundation.framework */; };
 		F30136F61F2D045D0023828A /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F30136F41F2D045D0023828A /* AVKit.framework */; };
 		F30136F81F2D04CB0023828A /* Lgsupage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30136F71F2D04CB0023828A /* Lgsupage.swift */; };
@@ -168,7 +167,6 @@
 		A1C9BA40FDEC1140574754BC /* Pods-Time TransacUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Time TransacUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Time TransacUITests/Pods-Time TransacUITests.release.xcconfig"; sourceTree = "<group>"; };
 		AF576BDA48946A2ADC6A2EF1 /* Pods-Time Transac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Time Transac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Time Transac/Pods-Time Transac.debug.xcconfig"; sourceTree = "<group>"; };
 		EEF9DFFA91551E89EC78BA7C /* Pods_Time_TransacTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Time_TransacTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F30136F11F2CF3590023828A /* RootPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootPageViewController.swift; sourceTree = "<group>"; };
 		F30136F31F2D045D0023828A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		F30136F41F2D045D0023828A /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		F30136F71F2D04CB0023828A /* Lgsupage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lgsupage.swift; sourceTree = "<group>"; };
@@ -434,7 +432,6 @@
 			isa = PBXGroup;
 			children = (
 				F3CE9C111FF8506A007E5C4A /* Constrainable.swift */,
-				F30136F11F2CF3590023828A /* RootPageViewController.swift */,
 				F30137111F2D479E0023828A /* CustomUIBorderControls.swift */,
 				F3E55F7A1F30033E003D3338 /* TapScreenToCloseKeyboardViewController.swift */,
 				F3619A231F3793EB00FCA94B /* CustomAnimationHandler.swift */,
@@ -785,6 +782,7 @@
 				"${BUILT_PRODUCTS_DIR}/Polyline/Polyline.framework",
 				"${BUILT_PRODUCTS_DIR}/PopupDialog/PopupDialog.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/Pulsator/Pulsator.framework",
 				"${BUILT_PRODUCTS_DIR}/RevealingSplashView/RevealingSplashView.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SHSearchBar/SHSearchBar.framework",
@@ -825,6 +823,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Polyline.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PopupDialog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Pulsator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RevealingSplashView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SHSearchBar.framework",
@@ -943,7 +942,6 @@
 				5F00B2BE2001FB7400749398 /* SplashViewController.swift in Sources */,
 				F33C83921F6B8220003157B7 /* endSignUpVC.swift in Sources */,
 				F3CA7AF21FEB43F800862F7A /* AppTabsController.swift in Sources */,
-				F30136F21F2CF3590023828A /* RootPageViewController.swift in Sources */,
 				3B71C4FD1EE6836800746DEE /* AppDelegate.swift in Sources */,
 				F3938E2D1F6A45A3006634E2 /* GradientView.swift in Sources */,
 				5F23C5A7202104270057DC30 /* RatingAnimationExtension.swift in Sources */,

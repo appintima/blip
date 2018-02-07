@@ -1160,6 +1160,8 @@
                         <outlet property="submitJobButton" destination="NnV-Fm-3yO" id="8Je-Mo-P0F"/>
                         <segue destination="gIW-QR-Jyc" kind="show" identifier="goToStartJob" id="CpH-hp-e2g"/>
                         <segue destination="6LJ-8K-qtP" kind="show" identifier="goToJobOwnerStartJob" id="FWA-3n-tol"/>
+                        <segue destination="vvh-Q4-40o" kind="show" identifier="endJobFromSellVC" id="sm7-fS-Mj4"/>
+                        <segue destination="RfP-UW-nyU" kind="show" identifier="startJobFromSellVC" id="8s4-mq-BLk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hh4-LM-Bpk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1847,28 +1849,11 @@
                     <connections>
                         <outlet property="StartJob" destination="noS-QU-W96" id="eL0-QR-nr4"/>
                         <outlet property="gradientView" destination="5Ra-eP-CRP" id="SAV-84-2OL"/>
-                        <segue destination="vvh-Q4-40o" kind="show" identifier="goToEndJob" id="9gb-6t-TeJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pqf-82-jq3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1474.4000000000001" y="-980.05997001499259"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="bHj-TS-fsO">
-            <objects>
-                <navigationController id="Bqc-ux-nFj" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2ag-Dx-ilu">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="gIW-QR-Jyc" kind="relationship" relationship="rootViewController" id="BQ2-oD-yJW"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qra-fk-V6C" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-703" y="-1738"/>
         </scene>
         <!--startJob-->
         <scene sceneID="QG2-mm-IGL">
@@ -1909,7 +1894,7 @@
                                             <action selector="startJobPressed:" destination="RfP-UW-nyU" eventType="touchUpInside" id="BEE-fS-h4S"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="m8T-Pr-tut">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Press start to begin the job" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="m8T-Pr-tut">
                                         <rect key="frame" x="37" y="93" width="300" height="148"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="148" id="Agd-lH-DfP"/>
@@ -1917,7 +1902,6 @@
                                             <constraint firstAttribute="width" constant="300" id="TSy-uL-unj"/>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="148" id="XiV-UM-fwP"/>
                                         </constraints>
-                                        <string key="text">Press start job when you are ready to begin the job. The job poster will be notified, and the job begins only after both have agreed to begin</string>
                                         <fontDescription key="fontDescription" name="CenturyGothic" family="Century Gothic" pointSize="22"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -1960,12 +1944,11 @@
                     <connections>
                         <outlet property="gradientView" destination="jwA-nf-Bsc" id="xc0-zJ-JG1"/>
                         <outlet property="jobView" destination="ylh-th-98O" id="nCc-fj-RhH"/>
-                        <segue destination="RrD-i2-Rbh" kind="show" identifier="goToEndJob" id="8Z6-Zm-unV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hew-xT-Oxk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="124" y="-101"/>
+            <point key="canvasLocation" x="218" y="-450"/>
         </scene>
         <!--feedbackController-->
         <scene sceneID="brV-uS-QEi">
@@ -2006,10 +1989,10 @@
             </objects>
             <point key="canvasLocation" x="954" y="-101"/>
         </scene>
-        <!--View Controller-->
+        <!--End Job-->
         <scene sceneID="aVj-DE-aoz">
             <objects>
-                <viewController id="vvh-Q4-40o" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="endJob" id="vvh-Q4-40o" customClass="EndJob" customModule="Time_Transac" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="GoY-Ek-1og"/>
                         <viewControllerLayoutGuide type="bottom" id="pRU-lF-yOI"/>
@@ -2038,6 +2021,9 @@
                                         <color key="value" red="0.40200379489999999" green="0.66299349070000002" blue="0.88240075110000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="endJobPressed" destination="vvh-Q4-40o" eventType="touchUpInside" id="fJN-u0-gf2"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.47450980539999998" green="0.8392156959" blue="0.97647058959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2060,7 +2046,4 @@
         <image name="emptyProfilePicture" width="64" height="64"/>
         <image name="facebookButton" width="512" height="512"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="CpH-hp-e2g"/>
-    </inferredMetricsTieBreakers>
 </document>

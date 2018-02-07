@@ -54,10 +54,6 @@ extension SellVC: Constrainable{
         banner.autoDismiss = true
     }
     
-    func prepareBannerForJobStarted(){
-        
-        
-    }
     
     func centerCameraOnJobAccepter(location: CLLocationCoordinate2D){
         
@@ -78,29 +74,165 @@ extension SellVC: Constrainable{
         
         service.checkUserStatus { (code) in
             if code == 0{
-                // Nothing happening
+                
+                self.service.getJobsFromFirebase(MapView: self.MapView) { annotationDict  in
+                    self.allAnnotations = annotationDict
+                }
             }
-            else if code == 1{
-                // segue him back into the navigation controller
+            else if code == 6{
+                
+                self.service.getJobAcceptedByCurrentUser(completion: { (job) in
+                    self.acceptedJob = job
+                    self.performSegue(withIdentifier: "endJobFromSellVC", sender: self)
+                })
+                
             }
+
+            else if code == 7{
+                
+                self.service.getJobAcceptedByCurrentUser(completion: { (job) in
+                    self.acceptedJob = job
+                    self.performSegue(withIdentifier: "startJobFromSellVC", sender: self)
+                })
+                
+            }
+                
+            else if code == 8{
+                
+                self.service.getJobAcceptedByCurrentUser(completion: { (job) in
+                    self.acceptedJob = job
+                    self.performSegue(withIdentifier: "goToStartJob", sender: self)
+                })
+                
+            }
+            
             else if code == 2{
-                if let allAnnos = self.MapView.annotations{
-                    self.MapView.removeAnnotations(allAnnos)
+                
+                self.setStateOnJobStart()
+            }
+            
+            else if code == 3{
+                
+                self.setStateWhenAccepterIsReady()
+            }
+            
+            else if code == 4{
+                
+                self.setStateForJobWasAccepted()
+            }
+            
+            else if code == 1{
+                
+                self.setStateOnJobEnd()
+            }
+        }
+        
+        service.setAppState { (code, jobObject) in
+            
+            if let stateCode = code{
+                
+                if stateCode == 1{
+                    
+                    self.setStateOnJobStart()
+                }
+                
+                else if stateCode == 4{
+                    
+                    self.setStateWhenAccepterIsReady()
+                }
+                
+                else if stateCode == 5{
+                    
+                    self.setStateOnJobEnd()
+                }
+                
+                else if stateCode == 3{
+                    
+                    self.setStateForJobWasAccepted()
+                }
+            }
+            
+            else{
+                
+                if let task = jobObject{
+                    if let anno = self.allAnnotations[task.jobID]{
+                        self.MapView.removeAnnotation(anno)
+                    }
                 }
             }
         }
+    }
+    
+    
+    func setStateForJobWasAccepted(){
         
-        self.service.getJobsFromFirebase(MapView: self.MapView) { annotationDict  in
-            self.allAnnotations = annotationDict
+        self.service.GetUserHashWhoAccepted { (hash) in
+            
+            self.service.getUserInfo(hash: hash, completion: { (userObject) in
+                if let user = userObject{
+                    self.accepterUserObject = user
+                    self.service.getJobPostedByCurrentUser(completion: { (jobPost) in
+                        self.currentJobPost = jobPost
+                        self.prepareBannerForJobAccepted(user: user, job: jobPost)
+                        if let annotations = self.MapView.annotations{
+                            self.MapView.removeAnnotations(annotations)
+                        }
+                        self.accepterHash = hash
+                        self.service.getLiveLocationOnce(hash: hash, completion: { (loc) in
+                            self.jobAccepterAnnotation.photoURL = user.photoURL
+                            self.MapView.addAnnotation(self.jobAccepterAnnotation)
+                            self.jobAccepterAnnotation.coordinate = loc
+                            self.centerCameraOnJobAccepter(location: loc)
+                            Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.updateAccepterLocations), userInfo: nil, repeats: true)
+                        })
+                    })
+                }
+            })
+        }
+    }
+    
+    func setStateWhenAccepterIsReady(){
+        
+        if let accepter = self.accepterUserObject{
+            let profilePicture = UIImageView()
+            profilePicture.kf.setImage(with: accepter.photoURL)
+            let banner = NotificationBanner(title: "\(accepter.name!) is ready", subtitle: "Tap here to begin the job", leftView: profilePicture, style: .info)
+            banner.show()
+            
+            banner.autoDismiss = false
+            banner.dismissOnTap = false
+            banner.dismissOnSwipeUp = false
+            banner.onTap = {
+                
+                banner.dismiss()
+                self.service.ownerReady(job: self.currentJobPost!, completion: { (accepterDeviceToken) in
+                    let title = "Intima"
+                    let displayName = (Auth.auth().currentUser?.displayName)!
+                    let body = "\(displayName) is ready for you to start the job"
+                    let device = accepterDeviceToken!
+                    var headers: HTTPHeaders = HTTPHeaders()
+                    headers = ["Content-Type":"application/json", "Authorization":"key=\(AppDelegate.SERVERKEY)"]
+                    
+                    let notification = ["to":"\(device)", "notification":["body":body, "title":title, "badge":1, "sound":"default"]] as [String : Any]
+                    
+                    Alamofire.request(AppDelegate.NOTIFICATION_URL as URLConvertible, method: .post as HTTPMethod, parameters: notification, encoding: JSONEncoding.default, headers: headers).responseJSON(completionHandler: { (response) in
+                        
+                        if let err = response.error{
+                            print(err.localizedDescription)
+                        }
+                        
+                    })
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ownerReadyNotification"), object: nil)
+                    
+                })
+            }
         }
         
-        self.service.checkJobAcceptedStatus { (code, hash) in
-            if code == 1{
-                // Make sure he is in startJobNavigation, but dont segue because there might be two different segues happning at same time
-            }
-            else if code == 2{
+        else{
+            
+            self.service.GetUserHashWhoAccepted { (hash) in
                 
-                self.service.getUserInfo(hash: hash!, completion: { (userObject) in
+                self.service.getUserInfo(hash: hash, completion: { (userObject) in
                     if let user = userObject{
                         self.accepterUserObject = user
                         self.service.getJobPostedByCurrentUser(completion: { (jobPost) in
@@ -110,92 +242,83 @@ extension SellVC: Constrainable{
                                 self.MapView.removeAnnotations(annotations)
                             }
                             self.accepterHash = hash
-                            self.service.getLiveLocationOnce(hash: hash!, completion: { (loc) in
+                            self.service.getLiveLocationOnce(hash: hash, completion: { (loc) in
                                 self.jobAccepterAnnotation.photoURL = user.photoURL
                                 self.MapView.addAnnotation(self.jobAccepterAnnotation)
                                 self.jobAccepterAnnotation.coordinate = loc
                                 self.centerCameraOnJobAccepter(location: loc)
                                 Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.updateAccepterLocations), userInfo: nil, repeats: true)
+                                self.setStateWhenAccepterIsReady()
                             })
                         })
-                    }
-                    else{
-                        
-                        let errorPopup = PopupDialog(title: "Error", message: "Could not get job accepter's information from the database")
-                        self.present(errorPopup, animated: true, completion: nil)
-                        return
                     }
                 })
             }
-        }
-        
-        service.removeAcceptedJobsFromMap { (job) in
-
-            if let task = job{
-                if let anno = self.allAnnotations[task.jobID]{
-                    self.MapView.removeAnnotation(anno)
-                }
-            }
-        }
-        
-        service.onAccepterPressedReady { (code) in
-            if code == 0{
-                if let accepter = self.accepterUserObject{
-                    let profilePicture = UIImageView()
-                    profilePicture.kf.setImage(with: accepter.photoURL)
-                    let banner = NotificationBanner(title: "\(accepter.name!) is ready", subtitle: "Tap here to begin the job", leftView: profilePicture, style: .info)
-                    banner.show()
-                    
-                    banner.autoDismiss = false
-                    banner.dismissOnTap = false
-                    banner.dismissOnSwipeUp = false
-                    banner.onTap = {
-                        
-                        banner.dismiss()
-                        self.service.ownerReady(job: self.currentJobPost!, completion: { (accepterDeviceToken) in
-                            let title = "Intima"
-                            let displayName = (Auth.auth().currentUser?.displayName)!
-                            let body = "\(displayName) is ready for you to start the job"
-                            let device = accepterDeviceToken!
-                            var headers: HTTPHeaders = HTTPHeaders()
-                            headers = ["Content-Type":"application/json", "Authorization":"key=\(AppDelegate.SERVERKEY)"]
-                            
-                            let notification = ["to":"\(device)", "notification":["body":body, "title":title, "badge":1, "sound":"default"]] as [String : Any]
-                            
-                            Alamofire.request(AppDelegate.NOTIFICATION_URL as URLConvertible, method: .post as HTTPMethod, parameters: notification, encoding: JSONEncoding.default, headers: headers).responseJSON(completionHandler: { (response) in
-                                
-                                if let err = response.error{
-                                    print(err.localizedDescription)
-                                }
-                                
-                            })
-                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ownerReadyNotification"), object: nil)
-                            
-                        })
-                    }
-                }
-                
-            }
-        }
-        
-        service.onJobBegun { (code) in
             
-            if code == 0{
-                let newCheck = LOTAnimationView(name: "check")
-                let banner = NotificationBanner(title: "Job begun", subtitle: "Your assigned job has begun", leftView: newCheck, style: .info)
-                newCheck.play()
-                banner.show()
-                banner.dismissOnSwipeUp = false
-                banner.dismissOnTap = false
-                banner.autoDismiss = true
-                UIView.animate(withDuration: 1.5, animations: {
-                    self.searchBar.alpha = 0
-                    self.postJobButton.alpha = 0
-                })
-            }
         }
     }
 
+
+    
+    func setStateOnJobStart(){
+        
+        let newCheck = LOTAnimationView(name: "check")
+        let banner = NotificationBanner(title: "Success", subtitle: "The job has begun", leftView: newCheck, style: .info)
+        newCheck.play()
+        banner.show()
+        banner.dismissOnSwipeUp = false
+        banner.dismissOnTap = false
+        banner.autoDismiss = true
+        UIView.animate(withDuration: 1.5, animations: {
+            self.searchBar.alpha = 0
+            self.postJobButton.alpha = 0
+        })
+    }
+    
+    func setStateOnJobEnd(){
+        
+        let check = LOTAnimationView(name: "check")
+        let banner = NotificationBanner(title: "Job completion", subtitle: "Tap here to confirm payment", leftView: check, style: .info)
+        check.play()
+        banner.show()
+        banner.dismissOnTap = false
+        banner.autoDismiss = false
+        banner.onTap = {
+            
+            banner.dismiss()
+            self.prepareAndAddBlurredLoader()
+            
+            self.service.getJobPostedByCurrentUser(completion: { (job) in
+                MyAPIClient.sharedClient.completeCharge(job: job, completion: { (id) in
+                    
+                    self.removedBlurredLoader()
+                    if id != nil{
+                        self.service.confirmedJobEnd()
+                        banner.dismiss()
+                        UIView.animate(withDuration: 1.5, animations: {
+                            
+                            self.searchBar.alpha = 1
+                            self.postJobButton.alpha = 1
+                        })
+                        UIView.animate(withDuration: 1, animations: {
+                            
+                            self.MapView.removeAnnotation(self.jobAccepterAnnotation)
+                            self.service.getJobsFromFirebase(MapView: self.MapView) { annotationDict  in
+                                self.allAnnotations = annotationDict
+                            }
+                        })
+                        
+                        
+                    }
+                    else{
+                        let errorPopup = PopupDialog(title: "Error", message: "Could not process the payment, please try again or add a new payment method")
+                        self.present(errorPopup, animated: true, completion: nil)
+                        banner.show()
+                    }
+                })
+            })
+        }
+    }
     
     @objc func updateAccepterLocations(){
         
@@ -214,8 +337,6 @@ extension SellVC: Constrainable{
         self.setupLayoutConstraints()
         
     }
-    
-    
     
     /**
      

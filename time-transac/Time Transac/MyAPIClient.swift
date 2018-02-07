@@ -54,7 +54,7 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
         case invalidResponse
     }
     
-    func completeCharge(amount: Int,
+    func authorizeCharge(amount: Int,
                         completion: @escaping (String?) -> ()) {
         
         service.getCustomerID { (customer) in
@@ -79,6 +79,28 @@ class MyAPIClient: NSObject, STPEphemeralKeyProvider {
             }
         }//End of get customer closure
         
+    }
+    
+    func completeCharge(job: Job, completion: @escaping(String?) -> ()){
+        
+        service.getChargeIDFor(job: job) { (id) in
+            
+            let url = self.baseURL.appendingPathComponent("captureCharge")
+            let params: [String: Any] = [
+                "chargeID": id
+            ]
+            Alamofire.request(url, method: .post, parameters: params)
+                .validate(statusCode: 200..<300)
+                .responseString { response in
+                    switch response.result {
+                    case .success:
+                        completion(response.value!)
+                    case .failure:
+                        completion(nil)
+                    }
+        
+            }
+        }
     }
     
     func getCurrentCustomer(completion: @escaping STPJSONResponseCompletionBlock) {
