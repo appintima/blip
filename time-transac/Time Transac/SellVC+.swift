@@ -54,6 +54,16 @@ extension SellVC: Constrainable{
         banner.autoDismiss = true
     }
     
+    func popupForNoInternet()-> PopupDialog {
+        let title = "Internet Unavailable"
+        let message = "Please connect to the internet and try again"
+        let okButton = CancelButton(title: "OK") {
+            return
+        }
+        let popup = PopupDialog(title: title, message: message)
+        popup.addButton(okButton)
+        return popup
+    }
     
     func centerCameraOnJobAccepter(location: CLLocationCoordinate2D){
         

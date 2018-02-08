@@ -35,6 +35,7 @@ class PasswordReset: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
         gradientView.startAnimation()
+        //checking for internet on first reach of the viewcontroller
         connectivity?.whenReachable = {_ in
             
         }

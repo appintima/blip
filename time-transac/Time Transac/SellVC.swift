@@ -95,7 +95,25 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.prepareMap()
+        
+        //checking for internet on first reach of the viewcontroller
+        connectivity?.whenReachable = {_ in
+            DispatchQueue.main.async {
+                self.view.isUserInteractionEnabled = true
+                self.prepareMap()   // Prepare map thing on the main thread if there is internet on first run
+            }
+        }
+        connectivity?.whenUnreachable = {_ in   // No internet on start up
+            self.view.isUserInteractionEnabled = false
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(connectivityChanged), name: Notification.Name.reachabilityChanged, object: connectivity)
+        do{
+            try connectivity?.startNotifier()
+        }catch{
+            print("Could not start the notifier")
+        }
+        
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -109,6 +127,26 @@ class SellVC: UIViewController,  MGLMapViewDelegate, CLLocationManagerDelegate, 
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+    }
+    
+    //Internet Notification for when internet is lost or came back
+    @objc func connectivityChanged(notification: Notification){
+        let connectivity = notification.object as! Connectivity
+        if (connectivity.connection == .wifi || connectivity.connection == .cellular){
+            self.internet = true
+            DispatchQueue.main.async {
+                self.prepareMap()   // When it regains connection try to prepare map on main thread
+                print("REGAINED CONNECTION")
+            }
+            
+        }else{
+            self.internet = false
+            DispatchQueue.main.async {
+                self.view.isUserInteractionEnabled = false
+                self.present(self.popupForNoInternet(), animated: true, completion: nil)
+            }
+            print("Connection Gone")
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

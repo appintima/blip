@@ -42,6 +42,10 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>FacebookAppID</key>
+	<string>488083244862838</string>
+	<key>FacebookDisplayName</key>
+	<string>488083244862838</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -51,6 +55,8 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>MGLMapboxAccessToken</key>
+	<string>pk.eyJ1Ijoic3Jpa2FudGhzcm52cyIsImEiOiJjajY0NDI0ejYxcDljMnFtcTNlYWliajNoIn0.jDevn4Fm6WBZUx7TDtys9Q</string>
 	<key>MKDirectionsApplicationSupportedModes</key>
 	<array>
 		<string>MKDirectionsModeBike</string>
@@ -63,8 +69,12 @@
 		<string>MKDirectionsModeSubway</string>
 		<string>MKDirectionsModeTrain</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>To Choose Profile Picture</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>To Know Where You Need Your Tasks Done</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To Choose Profile Picture</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
@@ -90,15 +100,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>FacebookAppID</key>
-	<string>488083244862838</string>
-	<key>FacebookDisplayName</key>
-	<string>488083244862838</string>
-	<key>MGLMapboxAccessToken</key>
-	<string>pk.eyJ1Ijoic3Jpa2FudGhzcm52cyIsImEiOiJjajY0NDI0ejYxcDljMnFtcTNlYWliajNoIn0.jDevn4Fm6WBZUx7TDtys9Q</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>To Choose Profile Picture</string>
-	<key>NSCameraUsageDescription</key>
-	<string>To Choose Profile Picture</string>
 </dict>
 </plist>

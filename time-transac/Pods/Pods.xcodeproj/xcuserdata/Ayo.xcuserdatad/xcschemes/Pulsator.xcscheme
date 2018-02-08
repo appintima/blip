@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '30CE52C8B1E0F5CE940B973AEF41F6EB'
-               BlueprintName = 'ISHPullUp'
+               BlueprintIdentifier = 'EF0D343E86584D14DD6DAAB8E8513676'
+               BlueprintName = 'Pulsator'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'ISHPullUp.framework'>
+               BuildableName = 'Pulsator.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
